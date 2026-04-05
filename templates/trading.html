@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QABOOT V4 PRO - Trading Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#004f24",
+                      "primary": "#3fff8b",
+                      "primary-container": "#13ea79",
+                      "primary-dim": "#24f07e",
+                      "surface-dim": "#0c0e17",
+                      "surface-tint": "#3fff8b",
+                      "primary-fixed-dim": "#24f07e",
+                      "on-tertiary-fixed": "#3a0004",
+                      "on-primary-fixed-variant": "#006832",
+                      "on-secondary": "#004d58",
+                      "on-background": "#f0f0fd",
+                      "on-surface": "#f0f0fd",
+                      "on-secondary-fixed": "#003a43",
+                      "error": "#ff716c",
+                      "tertiary-fixed-dim": "#ff7b75",
+                      "outline": "#737580",
+                      "on-tertiary-fixed-variant": "#790010",
+                      "on-surface-variant": "#aaaab7",
+                      "secondary-dim": "#3cd2eb",
+                      "on-secondary-fixed-variant": "#005965",
+                      "surface": "#0c0e17",
+                      "on-error": "#490006",
+                      "tertiary-fixed": "#ff928c",
+                      "surface-variant": "#222532",
+                      "surface-container-highest": "#222532",
+                      "on-secondary-container": "#e9fbff",
+                      "on-primary": "#005d2c",
+                      "inverse-on-surface": "#53545f",
+                      "surface-bright": "#282b3a",
+                      "secondary-container": "#006876",
+                      "tertiary-dim": "#ff716c",
+                      "error-container": "#9f0519",
+                      "surface-container-lowest": "#000000",
+                      "background": "#0c0e17",
+                      "outline-variant": "#464752",
+                      "surface-container": "#171924",
+                      "tertiary": "#ff716c",
+                      "secondary-fixed-dim": "#40d5ee",
+                      "tertiary-container": "#f94d4e",
+                      "surface-container-low": "#11131d",
+                      "inverse-surface": "#faf8ff",
+                      "on-tertiary": "#490006",
+                      "primary-fixed": "#3fff8b",
+                      "secondary": "#50e1f9",
+                      "inverse-primary": "#006e35",
+                      "error-dim": "#d7383b",
+                      "on-primary-fixed": "#004820",
+                      "on-tertiary-container": "#110000",
+                      "surface-container-high": "#1c1f2b",
+                      "on-error-container": "#ffa8a3",
+                      "secondary-fixed": "#54e3fc"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel {
+            background: rgba(28, 31, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(115, 117, 128, 0.1);
+        }
+        .rim-light { border-top: 1px solid rgba(115, 117, 128, 0.2); }
+        .pulse-gradient-primary { background: linear-gradient(135deg, #3fff8b 0%, #13ea79 100%); }
+        .pulse-gradient-error { background: linear-gradient(135deg, #ff716c 0%, #9f0519 100%); }
+        .light-leak-right { border-right: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SIDE NAVBAR -->
+<aside class="fixed left-0 top-0 h-full w-[280px] bg-[#11131d] dark:bg-slate-900/80 border-r border-white/10 flex flex-col py-8 z-50 shadow-2xl backdrop-blur-xl">
+<div class="px-8 mb-12">
+<h1 class="text-xl font-black tracking-tighter text-[#3fff8b]">QABOOT V4</h1>
+<p class="text-on-surface-variant text-xs tracking-widest uppercase mt-1">Pro Trader</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-8 py-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200" href="/">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-sans tracking-tight font-medium text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200" href="/portfolio">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-sans tracking-tight font-medium text-sm">Portfolio</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-3 text-[#3fff8b] border-l-4 border-[#3fff8b] bg-white/5 transition-transform scale-95 active:scale-100" href="/trading">
+<span class="material-symbols-outlined" data-icon="candlestick_chart">candlestick_chart</span>
+<span class="font-sans tracking-tight font-medium text-sm">Trading</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200" href="/charts">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-sans tracking-tight font-medium text-sm">Charts</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200" href="/strategies">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-sans tracking-tight font-medium text-sm">Strategies</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200" href="/signals">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-sans tracking-tight font-medium text-sm">Signals</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-3 text-slate-400 hover:text-white hover:bg-white/10 transition-colors duration-200" href="/settings">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-sans tracking-tight font-medium text-sm">Settings</span>
+</a>
+</nav>
+<div class="px-8 mt-auto">
+<button onclick="upgradeToPro()" class="w-full py-4 rounded-xl font-bold text-sm pulse-gradient-primary text-on-primary-fixed shadow-lg shadow-primary/20 cursor-pointer">
+                Upgrade to Pro
+            </button>
+</div>
+</aside>
+<!-- TOP NAVBAR -->
+<header class="flex justify-between items-center px-8 h-16 ml-[280px] sticky top-0 w-full z-40 backdrop-blur-md bg-[#0c0e17]/70 dark:bg-slate-950/70 border-b border-white/5">
+<div class="flex items-center gap-4">
+<span class="text-on-surface font-headline font-bold text-lg tracking-widest">QABOOT V4 PRO</span>
+</div>
+<div class="flex-1 max-w-xl mx-8">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-secondary text-on-surface" placeholder="Search markets, pairs, or orders..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<!-- Theme Toggle -->
+<button onclick="toggleTheme()" id="theme-toggle" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+</button>
+<button class="relative text-on-surface-variant hover:text-secondary transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-white/10">
+<div class="text-right">
+<p class="text-xs font-bold text-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Verified Trader</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of Alex Rivera, a professional male trader, clean background, sharp focus, professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9L6M7dsFTj952ZVhNbRwoHqI44mloPN1sc0twtmKeIac7fciplcPs1pfSgxIMAjcDOh_Ct8jyVNYF2Swjmi4cDTox0mrSKOIUautZlVWN25IOs7CNLhxLRu51IzKvJjE1zAVjds3IvfS020LcYyf9qdFC5QPlfqu48Otzy6Bxj0LYKBkwo5T7fPvEqMl2xbSNoTJvcJrDMXa-yCW_ovae_fubRqTTBkncTK9MK6qzbAsO4aNRka2vo0mlHaa7hNMkcOGJE7qusvA"/>
+</div>
+</div>
+<button onclick="connectWallet()" class="px-5 py-2 rounded-lg bg-secondary text-on-secondary font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all cursor-pointer">
+                Connect Wallet
+            </button>
+</div>
+</header>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[280px] p-8 space-y-8 min-h-screen">
+<!-- BENTO GRID FOR TRADING TERMINAL -->
+<div class="grid grid-cols-12 gap-6">
+<!-- LEFT: QUICK TRADE CARD -->
+<div class="col-span-12 lg:col-span-4 glass-panel rim-light rounded-xl p-6 flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-lg font-bold tracking-tight text-on-surface">Quick Trade</h3>
+<div class="flex bg-surface-container-lowest rounded-full p-1">
+<button class="px-6 py-1.5 rounded-full text-xs font-black pulse-gradient-primary text-on-primary uppercase transition-all">Buy</button>
+<button class="px-6 py-1.5 rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface uppercase transition-all">Sell</button>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="p-2 rounded-full bg-surface-container-high quick-trade-coin-icon" style="color: #F7931A; background-color: #F7931A20;">
+<span class="w-8 h-8 flex items-center justify-center font-bold text-xl">₿</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface quick-trade-coin-symbol">BTC / USDT</h4>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest quick-trade-coin-name">Bitcoin</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-lg font-bold text-primary quick-trade-coin-price">$43,210.50</p>
+<p class="text-[10px] text-primary-dim uppercase quick-trade-coin-change">+2.45% (24h)</p>
+</div>
+</div>
+<!-- Coin Selector Dropdown -->
+<div class="coin-selector-container">
+<select id="coinSelector" class="w-full bg-surface-container-lowest border border-white/10 rounded-lg p-3 text-sm text-on-surface focus:ring-1 focus:ring-secondary focus:outline-none">
+<option value="BTC">₿ Bitcoin (BTC) - $43,210.50</option>
+<option value="SOL">S Solana (SOL) - $79.76</option>
+<option value="USDT">₮ Tether (USDT) - $1.00</option>
+<option value="ETH">Ξ Ethereum (ETH) - $2,058.34</option>
+<option value="XRP">X XRP (XRP) - $1.30</option>
+<option value="TAO">τ Bittensor (TAO) - $297.50</option>
+<option value="ADA">A Cardano (ADA) - $0.2437</option>
+<option value="NEAR">N NEAR Protocol (NEAR) - $1.25</option>
+<option value="AVAX">A Avalanche (AVAX) - $8.88</option>
+<option value="FET">F Artificial Superintelligence (FET) - $0.2310</option>
+<option value="VIRTUAL">V Virtuals Protocol (VIRTUAL) - $0.6158</option>
+<option value="KAS">K Kaspa (KAS) - $0.0800</option>
+<option value="SEI">S Sei (SEI) - $0.0521</option>
+<option value="STX">S Stacks (STX) - $0.2094</option>
+<option value="SUI">S Sui (SUI) - $0.8501</option>
+<option value="ONDO">O Ondo (ONDO) - $0.2513</option>
+<option value="W">W Wormhole (W) - $0.0130</option>
+<option value="POL">P POL (POL) - $0.0904</option>
+</select>
+</div>
+<div class="flex gap-2 p-1 bg-surface-container-lowest rounded-lg">
+<button class="flex-1 py-2 text-xs font-bold text-on-surface bg-surface-container-high rounded-md shadow-sm">Market Order</button>
+<button class="flex-1 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface transition-all">Limit Order</button>
+</div>
+<div class="space-y-4">
+<div>
+<label class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mb-2 block">Amount</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-lowest border-none rounded-lg p-4 text-xl font-headline font-bold text-on-surface focus:ring-1 focus:ring-secondary" placeholder="0.00" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold text-sm coin-suffix">BTC</span>
+</div>
+</div>
+<div class="flex justify-between text-[10px] uppercase font-bold text-on-surface-variant px-1">
+<span>Balance: <span class="text-on-surface balance-display">$12,450.50</span></span>
+<span class="text-secondary cursor-pointer">Max</span>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border border-white/5 space-y-2">
+<div class="flex justify-between text-xs">
+<span class="text-on-surface-variant">Transaction Fee</span>
+<span class="text-on-surface font-bold">0.05%</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant font-medium">Total (Estimated)</span>
+<span class="text-primary font-black total-estimate">$0.00</span>
+</div>
+</div>
+<button onclick="executeTrade('buy')" class="w-full py-5 rounded-xl font-black text-sm uppercase tracking-[0.2em] pulse-gradient-primary text-on-primary-fixed shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-100 transition-all execute-trade-btn cursor-pointer">
+                        Execute Buy Order
+                    </button>
+</div>
+</div>
+<!-- RIGHT: PROFESSIONAL CANDLESTICK CHART -->
+<div class="col-span-12 lg:col-span-8 glass-panel rim-light rounded-xl p-6 overflow-hidden relative">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h3 class="text-lg font-bold tracking-tight text-on-surface">Market Dynamics</h3>
+<p class="text-xs text-on-surface-variant font-medium" id="chart-pair">Live BTC/USDT Performance</p>
+</div>
+<div class="flex gap-1 bg-surface-container-lowest p-1 rounded-lg">
+<button onclick="setTradingTimeframe('1m')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all" data-tf="1m">1m</button>
+<button onclick="setTradingTimeframe('5m')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all" data-tf="5m">5m</button>
+<button onclick="setTradingTimeframe('15m')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all" data-tf="15m">15m</button>
+<button onclick="setTradingTimeframe('30m')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all" data-tf="30m">30m</button>
+<button onclick="setTradingTimeframe('1h')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all text-on-surface-variant hover:text-secondary" data-tf="1h">1H</button>
+<button onclick="setTradingTimeframe('4h')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all bg-secondary text-on-secondary" data-tf="4h">4H</button>
+<button onclick="setTradingTimeframe('1d')" class="timeframe-btn px-3 py-1 rounded text-[10px] font-bold transition-all text-on-surface-variant hover:text-secondary" data-tf="1d">1D</button>
+</div>
+</div>
+
+<!-- PROFESSIONAL CANDLESTICK CHART CONTAINER -->
+<div class="relative h-72 bg-surface-container-lowest rounded-lg overflow-hidden" id="trading-chart-container">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20" style="padding: 20px 60px 40px 60px;">
+<div class="border-t border-white/30 w-full"></div>
+<div class="border-t border-white/20 w-full"></div>
+<div class="border-t border-white/20 w-full"></div>
+<div class="border-t border-white/20 w-full"></div>
+<div class="border-t border-white/30 w-full"></div>
+</div>
+<div class="absolute inset-0 flex justify-between pointer-events-none opacity-20" style="padding: 20px 60px 40px 60px;">
+<div class="border-l border-white/20 h-full"></div>
+<div class="border-l border-white/20 h-full"></div>
+<div class="border-l border-white/20 h-full"></div>
+<div class="border-l border-white/20 h-full"></div>
+<div class="border-l border-white/20 h-full"></div>
+</div>
+
+<!-- Price Labels (Y-axis) -->
+<div class="absolute left-2 top-5 bottom-10 flex flex-col justify-between text-[10px] text-outline font-mono" id="price-labels">
+<span>$67,500</span>
+<span>$66,500</span>
+<span>$65,500</span>
+<span>$64,500</span>
+<span>$63,500</span>
+</div>
+
+<!-- Candlesticks Container -->
+<svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" id="candlestick-svg" style="padding: 0 10px 0 50px;">
+<defs>
+<linearGradient id="bullGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" style="stop-color:#3fff8b;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#13ea79;stop-opacity:1" />
+</linearGradient>
+<linearGradient id="bearGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" style="stop-color:#ff716c;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#9f0519;stop-opacity:1" />
+</linearGradient>
+</defs>
+<g id="candlesticks-group"></g>
+</svg>
+
+<!-- Time Labels (X-axis) -->
+<div class="absolute bottom-2 left-12 right-4 flex justify-between text-[10px] text-outline font-mono" id="time-labels">
+<span>10:00</span>
+<span>10:15</span>
+<span>10:30</span>
+<span>10:45</span>
+<span>11:00</span>
+<span>11:15</span>
+<span>11:30</span>
+<span>11:45</span>
+</div>
+
+<!-- Current Price Line -->
+<div class="absolute right-0 top-1/2 flex items-center gap-2" id="current-price-indicator">
+<div class="h-[1px] w-16 bg-primary/50"></div>
+<span class="text-[10px] font-bold text-primary bg-primary/20 px-2 py-0.5 rounded">$65,012.45</span>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-4 gap-4">
+<div class="p-4 bg-surface-container-lowest rounded-lg">
+<p class="text-[10px] text-on-surface-variant font-bold uppercase mb-1">Market Cap</p>
+<p class="text-sm font-bold text-on-surface">$841.2B</p>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded-lg">
+<p class="text-[10px] text-on-surface-variant font-bold uppercase mb-1">Vol (24h)</p>
+<p class="text-sm font-bold text-on-surface">$22.4B</p>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded-lg">
+<p class="text-[10px] text-on-surface-variant font-bold uppercase mb-1">High (24h)</p>
+<p class="text-sm font-bold text-primary">$44,120</p>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded-lg">
+<p class="text-[10px] text-on-surface-variant font-bold uppercase mb-1">Low (24h)</p>
+<p class="text-sm font-bold text-error">$42,050</p>
+</div>
+</div>
+</div>
+<!-- BOTTOM FULL WIDTH: TABLES -->
+<div class="col-span-12 space-y-6">
+<!-- OPEN ORDERS -->
+<div class="glass-panel rim-light rounded-xl overflow-hidden">
+<div class="px-8 py-6 flex items-center justify-between border-b border-white/5">
+<h3 class="text-lg font-bold tracking-tight text-on-surface">Open Orders</h3>
+<div class="flex gap-4">
+<span class="px-3 py-1 rounded bg-secondary/10 text-secondary text-[10px] font-black uppercase tracking-widest">3 ACTIVE</span>
+<button class="text-on-surface-variant hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-lowest">
+<tr>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Order ID</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Type</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Coin</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Amount</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Price</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="px-8 py-5 text-sm font-medium text-on-surface">#ORD-9921</td>
+<td class="px-8 py-5"><span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold uppercase">Buy Limit</span></td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">BTC</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface">0.45000</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface">$42,900.00</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-xs text-on-surface-variant">Pending</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="px-4 py-1.5 rounded bg-error/10 text-error text-[10px] font-bold uppercase hover:bg-error/20 transition-all">Cancel</button>
+</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="px-8 py-5 text-sm font-medium text-on-surface">#ORD-9844</td>
+<td class="px-8 py-5"><span class="px-2 py-0.5 rounded bg-error/10 text-error text-[10px] font-bold uppercase">Sell Limit</span></td>
+<td class="px-8 py-5 text-sm font-bold text-on-surface">ETH</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface">12.5000</td>
+<td class="px-8 py-5 text-sm font-medium text-on-surface">$2,450.00</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-xs text-on-surface-variant">Pending</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="px-4 py-1.5 rounded bg-error/10 text-error text-[10px] font-bold uppercase hover:bg-error/20 transition-all">Cancel</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- ORDER HISTORY -->
+<div class="glass-panel rim-light rounded-xl overflow-hidden">
+<div class="px-8 py-6 flex items-center justify-between border-b border-white/5">
+<h3 class="text-lg font-bold tracking-tight text-on-surface">Recent History</h3>
+<button class="text-secondary text-[10px] font-black uppercase tracking-widest hover:underline transition-all">Export CSV</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-lowest">
+<tr>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Time</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Pair</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Side</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">Filled</th>
+<th class="px-8 py-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest text-right">Total</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="px-8 py-4 text-[11px] text-on-surface-variant font-mono">2023-11-24 14:32:01</td>
+<td class="px-8 py-4 text-sm font-bold text-on-surface">SOL/USDT</td>
+<td class="px-8 py-4 text-xs font-black text-primary uppercase">Buy</td>
+<td class="px-8 py-4 text-sm text-on-surface">150.00</td>
+<td class="px-8 py-4 text-sm font-bold text-on-surface text-right">$8,214.50</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="px-8 py-4 text-[11px] text-on-surface-variant font-mono">2023-11-24 12:15:44</td>
+<td class="px-8 py-4 text-sm font-bold text-on-surface">BTC/USDT</td>
+<td class="px-8 py-4 text-xs font-black text-error uppercase">Sell</td>
+<td class="px-8 py-4 text-sm text-on-surface">0.0510</td>
+<td class="px-8 py-4 text-sm font-bold text-on-surface text-right">$2,210.00</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="px-8 py-4 text-[11px] text-on-surface-variant font-mono">2023-11-23 21:05:12</td>
+<td class="px-8 py-4 text-sm font-bold text-on-surface">ETH/USDT</td>
+<td class="px-8 py-4 text-xs font-black text-primary uppercase">Buy</td>
+<td class="px-8 py-4 text-sm text-on-surface">2.4400</td>
+<td class="px-8 py-4 text-sm font-bold text-on-surface text-right">$5,820.25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FLOATING ACTION BUTTON (Suppressed as per rules for Details/Settings/Transactional contexts, but included as indicator if context allowed - rules mandate suppression here) -->
+
+    <!-- Stitch API Integration -->
+    <script src="{{ url_for('static', filename='js/stitch_api.js') }}?v=1"></script>
+    <!-- Real Data API -->
+    <script src="{{ url_for('static', filename='js/trading_real.js') }}?v=1"></script>
+    <!-- Trading Populate Script - Real data for Trading Terminal -->
+    <script src="{{ url_for('static', filename='js/trading_populate.js') }}?v=1"></script>
+    <!-- Professional Candlestick Chart Script -->
+    <script>
+        // ===== PROFESSIONAL CANDLESTICK CHART =====
+        let tradingCandleData = [];
+        let currentTradingTimeframe = '4h';
+        let selectedTradingPair = 'BTC/USDT';
+        let currentTradingPrice = 65012.45;
+        
+        // Generate realistic candlestick data
+        function generateCandleData(count, basePrice, volatility) {
+            const candles = [];
+            let price = basePrice;
+            
+            for (let i = 0; i < count; i++) {
+                const open = price;
+                const change = (Math.random() - 0.5) * volatility;
+                const close = open + change;
+                const high = Math.max(open, close) + Math.random() * volatility * 0.3;
+                const low = Math.min(open, close) - Math.random() * volatility * 0.3;
+                
+                candles.push({
+                    open: open,
+                    high: high,
+                    low: low,
+                    close: close,
+                    isBullish: close >= open,
+                    timestamp: new Date(Date.now() - (count - i) * 15 * 60 * 1000)
+                });
+                
+                price = close;
+            }
+            
+            currentTradingPrice = candles[candles.length - 1].close;
+            return candles;
+        }
+        
+        function setTradingTimeframe(tf) {
+            currentTradingTimeframe = tf;
+            
+            // Update button states
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.classList.remove('bg-secondary', 'text-on-secondary');
+                btn.classList.add('text-on-surface-variant');
+            });
+            document.querySelector(`button[data-tf="${tf}"]`).classList.add('bg-secondary', 'text-on-secondary');
+            document.querySelector(`button[data-tf="${tf}"]`).classList.remove('text-on-surface-variant');
+            
+            // Regenerate candles based on timeframe
+            let count, volatility;
+            switch(tf) {
+                case '1m': count = 60; volatility = 50; break;
+                case '5m': count = 48; volatility = 100; break;
+                case '15m': count = 32; volatility = 200; break;
+                case '30m': count = 24; volatility = 300; break;
+                case '1h': count = 24; volatility = 500; break;
+                case '4h': count = 24; volatility = 1000; break;
+                case '1d': count = 30; volatility = 2000; break;
+                default: count = 24; volatility = 1000;
+            }
+            
+            tradingCandleData = generateCandleData(count, currentTradingPrice, volatility);
+            renderCandlesticks();
+            updateTimeLabels(tf);
+        }
+        
+        function updateTimeLabels(tf) {
+            const labels = document.getElementById('time-labels');
+            if (!labels) return;
+            
+            const now = new Date();
+            const times = [];
+            
+            for (let i = 8; i >= 0; i--) {
+                const t = new Date(now);
+                switch(tf) {
+                    case '1m': t.setMinutes(t.getMinutes() - i * 5); break;
+                    case '5m': t.setMinutes(t.getMinutes() - i * 10); break;
+                    case '15m': t.setMinutes(t.getMinutes() - i * 15); break;
+                    case '30m': t.setHours(t.getHours() - i * 1); break;
+                    case '1h': t.setHours(t.getHours() - i * 2); break;
+                    case '4h': t.setHours(t.getHours() - i * 4); break;
+                    case '1d': t.setDate(t.getDate() - i * 3); break;
+                }
+                times.push(t.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }));
+            }
+            
+            labels.innerHTML = times.map(t => `<span>${t}</span>`).join('');
+        }
+        
+        function renderCandlesticks() {
+            const svg = document.getElementById('candlestick-svg');
+            const group = document.getElementById('candlesticks-group');
+            if (!group) return;
+            
+            const width = svg.clientWidth - 60;
+            const height = svg.clientHeight - 60;
+            
+            // Find min and max for scaling
+            const prices = tradingCandleData.flatMap(c => [c.high, c.low]);
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+            const priceRange = maxPrice - minPrice;
+            
+            // Update price labels
+            const priceLabels = document.getElementById('price-labels');
+            if (priceLabels) {
+                const steps = 4;
+                let labelHTML = '';
+                for (let i = 0; i <= steps; i++) {
+                    const price = maxPrice - (priceRange * (i / steps));
+                    labelHTML += `<span>$${price.toLocaleString('en-US', {maximumFractionDigits: 0})}</span>`;
+                }
+                priceLabels.innerHTML = labelHTML;
+            }
+            
+            // Render candles
+            const candleWidth = width / tradingCandleData.length * 0.7;
+            const gap = width / tradingCandleData.length;
+            
+            let svgContent = '';
+            
+            tradingCandleData.forEach((candle, i) => {
+                const x = i * gap + (gap - candleWidth) / 2 + 10;
+                const openY = height - ((candle.open - minPrice) / priceRange) * height + 20;
+                const closeY = height - ((candle.close - minPrice) / priceRange) * height + 20;
+                const highY = height - ((candle.high - minPrice) / priceRange) * height + 20;
+                const lowY = height - ((candle.low - minPrice) / priceRange) * height + 20;
+                
+                const bodyTop = Math.min(openY, closeY);
+                const bodyHeight = Math.abs(closeY - openY) || 1;
+                const color = candle.isBullish ? 'url(#bullGradient)' : 'url(#bearGradient)';
+                const wickColor = candle.isBullish ? '#3fff8b' : '#ff716c';
+                
+                // Wick
+                svgContent += `<line x1="${x + candleWidth/2}" y1="${highY}" x2="${x + candleWidth/2}" y2="${lowY}" stroke="${wickColor}" stroke-width="1" />`;
+                // Body
+                svgContent += `<rect x="${x}" y="${bodyTop}" width="${candleWidth}" height="${Math.max(bodyHeight, 2)}" fill="${color}" rx="1" />`;
+            });
+            
+            group.innerHTML = svgContent;
+            
+            // Update current price indicator
+            const indicator = document.getElementById('current-price-indicator');
+            if (indicator) {
+                const lastPrice = tradingCandleData[tradingCandleData.length - 1]?.close || currentTradingPrice;
+                const yPos = height - ((lastPrice - minPrice) / priceRange) * height + 20;
+                indicator.style.top = `${yPos}px`;
+                indicator.querySelector('span:last-child').textContent = `$${lastPrice.toLocaleString('en-US', {maximumFractionDigits: 2})}`;
+            }
+        }
+        
+        // Auto-refresh candles every 5 seconds
+        function startCandleRefresh() {
+            setInterval(() => {
+                if (tradingCandleData.length > 0) {
+                    const lastCandle = tradingCandleData[tradingCandleData.length - 1];
+                    const change = (Math.random() - 0.5) * (currentTradingTimeframe === '1m' ? 20 : 100);
+                    lastCandle.close += change;
+                    lastCandle.high = Math.max(lastCandle.high, lastCandle.close);
+                    lastCandle.low = Math.min(lastCandle.low, lastCandle.close);
+                    lastCandle.isBullish = lastCandle.close >= lastCandle.open;
+                    renderCandlesticks();
+                }
+            }, 5000);
+        }
+        
+        // ===== TRADING FUNCTIONS =====
+        function executeTrade(side) {
+            const btn = document.querySelector('.execute-trade-btn');
+            const coin = document.querySelector('.quick-trade-coin-symbol')?.textContent || 'BTC/USDT';
+            const amountInput = document.querySelector('input[type="number"]');
+            const amount = amountInput?.value || '0.00';
+            const currentPrice = currentTradingPrice || 65000;
+            
+            // Use confirm dialog
+            if (typeof confirmTrade === 'function') {
+                confirmTrade(side, amount, coin.replace('/USDT', ''), currentPrice.toFixed(2),
+                    () => {
+                        // Confirmed - execute trade
+                        executeTradeConfirmed(side, coin, amount, btn);
+                    },
+                    () => {
+                        // Cancelled
+                        console.log('Trade cancelled by user');
+                    }
+                );
+            } else {
+                // Fallback
+                if (confirm(`Confirm ${side.toUpperCase()} order?`)) {
+                    executeTradeConfirmed(side, coin, amount, btn);
+                }
+            }
+        }
+        
+        function executeTradeConfirmed(side, coin, amount, btn) {
+            if (btn) {
+                const originalText = btn.textContent;
+                btn.textContent = 'Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    toastSuccess('Order Executed', `${side.toUpperCase()} ${amount} ${coin}\nStatus: Pending Execution`);
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+        
+        function connectWallet() {
+            alert('🔐 Wallet Connection\n\nPlease connect your MetaMask or WalletConnect to proceed with trading.');
+        }
+        
+        function upgradeToPro() {
+            alert('⭐ Upgrade to Pro\n\nPro Features:\n- Unlimited trading\n- Advanced analytics\n- Whale alerts\n- Priority support');
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme initialization
+            const savedTheme = localStorage.getItem('qaboot-theme') || 'dark';
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'light') {
+                htmlElement.classList.remove('dark');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+            
+            setTradingTimeframe('4h');
+            startCandleRefresh();
+        });
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const isDark = htmlElement.classList.contains('dark');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('qaboot-theme', 'light');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('qaboot-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+    </script>
+    
+    <!-- Confirm Dialog System -->
+    <script src="{{ url_for('static', filename='js/confirm-dialog.js') }}"></script>
+</body></html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QABOOT V4 PRO - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0c0e17; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel {
+            background: rgba(28, 31, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(115, 117, 128, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(115, 117, 128, 0.2); border-radius: 10px; }
+        .pulse-gradient {
+            background: linear-gradient(135deg, #3fff8b 0%, #13ea79 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#53545f",
+                      "on-tertiary-fixed-variant": "#790010",
+                      "on-error": "#490006",
+                      "surface-tint": "#3fff8b",
+                      "on-error-container": "#ffa8a3",
+                      "background": "#0c0e17",
+                      "surface-variant": "#222532",
+                      "on-primary-container": "#004f24",
+                      "secondary-fixed-dim": "#40d5ee",
+                      "primary-fixed": "#3fff8b",
+                      "surface": "#0c0e17",
+                      "outline-variant": "#464752",
+                      "primary": "#3fff8b",
+                      "on-primary": "#005d2c",
+                      "tertiary-container": "#f94d4e",
+                      "primary-container": "#13ea79",
+                      "secondary-fixed": "#54e3fc",
+                      "primary-fixed-dim": "#24f07e",
+                      "primary-dim": "#24f07e",
+                      "tertiary-fixed": "#ff928c",
+                      "error-container": "#9f0519",
+                      "on-primary-fixed": "#004820",
+                      "on-secondary-fixed": "#003a43",
+                      "on-surface": "#f0f0fd",
+                      "surface-dim": "#0c0e17",
+                      "surface-bright": "#282b3a",
+                      "on-secondary-container": "#e9fbff",
+                      "outline": "#737580",
+                      "inverse-primary": "#006e35",
+                      "on-surface-variant": "#aaaab7",
+                      "tertiary-fixed-dim": "#ff7b75",
+                      "secondary-dim": "#3cd2eb",
+                      "secondary-container": "#006876",
+                      "error": "#ff716c",
+                      "inverse-surface": "#faf8ff",
+                      "surface-container-low": "#11131d",
+                      "on-secondary-fixed-variant": "#005965",
+                      "surface-container-highest": "#222532",
+                      "on-primary-fixed-variant": "#006832",
+                      "tertiary": "#ff716c",
+                      "surface-container-lowest": "#000000",
+                      "on-tertiary-fixed": "#3a0004",
+                      "on-tertiary-container": "#110000",
+                      "error-dim": "#d7383b",
+                      "surface-container-high": "#1c1f2b",
+                      "surface-container": "#171924",
+                      "on-secondary": "#004d58",
+                      "on-tertiary": "#490006",
+                      "on-background": "#f0f0fd",
+                      "tertiary-dim": "#ff716c",
+                      "secondary": "#50e1f9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-hidden h-screen flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[280px] z-40 bg-[#11131d] border-r border-white/5 flex flex-col pt-20 pb-6 px-4">
+<div class="mb-8 px-4">
+<h2 class="text-lg font-black text-[#f0f0fd]">Kinetic Observatory</h2>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest">Pro Trader Node</p>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-4 py-3 px-4 text-[#f0f0fd]/50 hover:text-[#f0f0fd] hover:bg-white/5 transition-all duration-300 rounded-xl" href="/">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Inter'] text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-[#f0f0fd]/50 hover:text-[#f0f0fd] hover:bg-white/5 transition-all duration-300 rounded-xl" href="/portfolio">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-['Inter'] text-sm font-medium">Portfolio</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-[#f0f0fd]/50 hover:text-[#f0f0fd] hover:bg-white/5 transition-all duration-300 rounded-xl" href="/trading">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-['Inter'] text-sm font-medium">Trading</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-[#f0f0fd]/50 hover:text-[#f0f0fd] hover:bg-white/5 transition-all duration-300 rounded-xl" href="/charts">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-['Inter'] text-sm font-medium">Charts</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-[#f0f0fd]/50 hover:text-[#f0f0fd] hover:bg-white/5 transition-all duration-300 rounded-xl" href="/strategies">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-['Inter'] text-sm font-medium">Strategies</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-[#f0f0fd]/50 hover:text-[#f0f0fd] hover:bg-white/5 transition-all duration-300 rounded-xl" href="/signals">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-['Inter'] text-sm font-medium">Signals</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-4 py-3 px-4 text-[#00E676] border-l-4 border-[#00E676] bg-gradient-to-r from-[#00E676]/10 to-transparent transition-all duration-300" href="/settings">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Inter'] text-sm font-medium">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Context -->
+<div class="flex-1 flex flex-col ml-[280px]">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-[280px] z-50 h-16 px-6 flex justify-between items-center bg-[#1c1f2b]/70 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<div class="text-xl font-bold tracking-tighter text-[#f0f0fd]">QABOOT V4 PRO</div>
+<div class="flex items-center gap-4">
+<!-- Theme Toggle -->
+<button onclick="toggleTheme()" id="theme-toggle" class="p-2 text-[#f0f0fd]/60 hover:bg-white/5 transition-colors rounded-full active:scale-95 duration-200" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+</button>
+<button class="p-2 text-[#f0f0fd]/60 hover:bg-white/5 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center gap-2 p-1 pr-3 text-[#f0f0fd]/60 hover:bg-white/5 transition-colors rounded-full active:scale-95 duration-200 border border-white/5">
+<span class="material-symbols-outlined text-3xl">account_circle</span>
+<span class="text-xs font-medium text-on-surface">Alex River</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto custom-scrollbar pt-24 pb-32 px-12 space-y-8">
+<header>
+<h1 class="text-3xl font-black tracking-tight text-on-surface">Node Configuration</h1>
+<p class="text-on-surface-variant text-sm mt-1">Manage your observatory preferences and security protocols.</p>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<!-- Section 1: Account Settings -->
+<section class="col-span-12 lg:col-span-7 glass-panel p-8 rounded-xl shadow-xl flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-secondary text-2xl">person</span>
+<h2 class="text-lg font-bold">Account Settings</h2>
+</div>
+<div class="flex items-center gap-8">
+<div class="relative group">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-primary/30 group-hover:border-primary transition-colors cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="Close up of a professional male trader wearing headphones in a dark moody office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbsiMj0XjwJjWeSzNkS8lljuJRZmCMzRqYZDzKMqeKK7Qc90mDUgzZHTaUIlRH4tPf42uW_C1DVXP8dBOIlyZ4Tp3dh1bwTacF8bUku76fyjRMgTaWGC200WUoZ5n9vbVHuudeAjrn7HHCocLvfOZ8Cg-eG3YeKdV4fWvEF4RluRSfbvJ7cXHTX0nW7WO2pm7voXsPtsjrgDTQDFbMXcuZ99lJjccp4K-LnVh-kVcQb1HdEVL0qM-6p3hb71g-HZotpYJSGn87NiE"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<div class="flex-1 space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-[10px] uppercase tracking-wider font-bold text-on-surface-variant px-1">Full Name</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl px-4 py-3 focus:ring-1 focus:ring-secondary text-sm text-on-surface" type="text" value="Alex River"/>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] uppercase tracking-wider font-bold text-on-surface-variant px-1">Phone Node</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl px-4 py-3 focus:ring-1 focus:ring-secondary text-sm text-on-surface" type="text" value="+1 555-0123"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] uppercase tracking-wider font-bold text-on-surface-variant px-1">Email Terminal</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl px-4 py-3 focus:ring-1 focus:ring-secondary text-sm text-on-surface" type="email" value="alex.river@qaboot.pro"/>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-white/5 flex justify-end">
+<button class="text-secondary text-sm font-semibold hover:underline flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">lock_reset</span>
+                            Change Password
+                        </button>
+</div>
+</section>
+<!-- Section 2: Trading Preferences -->
+<section class="col-span-12 lg:col-span-5 glass-panel p-8 rounded-xl shadow-xl flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-secondary text-2xl">trending_up</span>
+<h2 class="text-lg font-bold">Trading Preferences</h2>
+</div>
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="text-sm font-medium">Default Currency</p>
+<p class="text-xs text-on-surface-variant">Fiat pairing for display</p>
+</div>
+<div class="flex bg-surface-container-lowest p-1 rounded-xl">
+<button class="px-4 py-1 text-xs font-bold rounded-lg bg-primary text-on-primary shadow-lg">USD</button>
+<button class="px-4 py-1 text-xs font-bold rounded-lg text-on-surface-variant hover:text-on-surface">SAR</button>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-sm font-medium">Trading Mode</p>
+<p class="text-xs text-on-surface-variant">Switch to simulated engine</p>
+</div>
+<div class="flex bg-surface-container-lowest p-1 rounded-xl">
+<button class="px-4 py-1 text-xs font-bold rounded-lg text-on-surface-variant">Live</button>
+<button class="px-4 py-1 text-xs font-bold rounded-lg bg-secondary text-on-secondary shadow-lg">Paper</button>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between">
+<p class="text-sm font-medium">Risk Exposure</p>
+<span class="text-xs font-bold text-secondary uppercase">Moderate</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-lowest rounded-lg appearance-none cursor-pointer accent-primary" max="3" min="1" type="range" value="2"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">
+<span>Conservative</span>
+<span>Moderate</span>
+<span>Aggressive</span>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<p class="text-sm font-medium">Auto-trading Hub</p>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-lowest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section 3: Notifications -->
+<section class="col-span-12 lg:col-span-4 glass-panel p-8 rounded-xl shadow-xl flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-white/5 pb-4">
+<span class="material-symbols-outlined text-secondary text-2xl">notifications_active</span>
+<h2 class="text-lg font-bold">Signal Notifications</h2>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-sm">Email Alerts</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-lowest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Push Notifications</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-lowest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Signal Alerts</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-surface-container-lowest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="space-y-2 pt-2">
+<label class="text-[10px] uppercase font-bold text-on-surface-variant">Price Alert Threshold (%)</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm text-secondary font-bold" type="number" value="5.0"/>
+</div>
+</div>
+</section>
+<!-- Section 4: Security -->
+<section class="col-span-12 lg:col-span-8 glass-panel p-8 rounded-xl shadow-xl flex flex-col gap-6">
+<div class="flex justify-between items-center border-b border-white/5 pb-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary text-2xl">security</span>
+<h2 class="text-lg font-bold">Security Protocols</h2>
+</div>
+<button class="bg-surface-bright px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/10 transition-colors border border-white/10">Manage API Keys</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-6">
+<div class="p-4 rounded-xl bg-surface-container-lowest border-l-4 border-primary">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-bold">2FA Authentication</p>
+<p class="text-xs text-on-surface-variant">Protects your terminal access</p>
+</div>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-1 rounded-md font-bold uppercase">Active</span>
+</div>
+</div>
+<div class="space-y-3">
+<p class="text-[10px] uppercase font-bold text-on-surface-variant">Active Session Nodes</p>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs p-3 bg-white/5 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">desktop_windows</span>
+<div>
+<p class="font-medium">Windows Terminal - Chrome</p>
+<p class="text-[10px] text-on-surface-variant">192.168.1.1 - Current</p>
+</div>
+</div>
+<button class="text-error-dim hover:underline text-[10px] font-bold">Revoke</button>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<p class="text-[10px] uppercase font-bold text-on-surface-variant">Recent Access History</p>
+<div class="overflow-hidden rounded-xl border border-white/5">
+<table class="w-full text-left text-xs">
+<thead class="bg-surface-container-lowest text-on-surface-variant uppercase tracking-tighter">
+<tr>
+<th class="px-3 py-2 font-black">Event</th>
+<th class="px-3 py-2 font-black">Status</th>
+<th class="px-3 py-2 font-black">Timestamp</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr>
+<td class="px-3 py-2">Login</td>
+<td class="px-3 py-2 text-primary font-bold">Success</td>
+<td class="px-3 py-2 text-on-surface-variant">10:24 AM</td>
+</tr>
+<tr>
+<td class="px-3 py-2">API Call</td>
+<td class="px-3 py-2 text-primary font-bold">Success</td>
+<td class="px-3 py-2 text-on-surface-variant">09:12 AM</td>
+</tr>
+<tr>
+<td class="px-3 py-2">Failed Attempt</td>
+<td class="px-3 py-2 text-error font-bold">Denied</td>
+<td class="px-3 py-2 text-on-surface-variant">Yesterday</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Danger Zone -->
+<section class="col-span-12 glass-panel p-8 rounded-xl shadow-xl flex flex-col gap-4 border-l-4 border-error/50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-error text-2xl">report</span>
+<h2 class="text-lg font-bold text-error">Danger Zone</h2>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-sm text-on-surface-variant max-w-2xl">Permanently export your observatory data or deactivate your node instance. Caution: Deleting your account is irreversible and all API links will be severed.</p>
+<div class="flex gap-4 w-full md:w-auto">
+<button class="flex-1 md:flex-none border border-outline px-6 py-3 rounded-xl text-xs font-bold hover:bg-white/5 transition-colors">Export Node Data</button>
+<button class="flex-1 md:flex-none bg-error text-on-tertiary px-6 py-3 rounded-xl text-xs font-black shadow-lg shadow-error/20 hover:scale-105 active:scale-95 transition-all">Decommission Node</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Sticky Footer Action -->
+<footer class="fixed bottom-0 right-0 left-[280px] h-20 px-12 flex items-center justify-between bg-surface-container-low/80 backdrop-blur-xl border-t border-white/5 z-50">
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">sync</span>
+                Last node sync: 2 mins ago
+            </div>
+<div class="flex gap-4">
+<button class="px-8 py-3 text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors">Reset Terminal</button>
+<button class="pulse-gradient px-10 py-3 rounded-xl text-sm font-black text-black shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">Save Changes</button>
+</div>
+</footer>
+</div>
+    <!-- Settings Populate Script -->
+    <script src="{{ url_for('static', filename='js/settings_populate.js') }}?v=1"></script>
+    <!-- Settings Buttons Script -->
+    <script>
+        function manageApiKeys() {
+            alert('🔐 API Keys Management\n\nYour API keys:\n- Binance API: ***\n- WebSocket: ***\n\nFor security, full keys are hidden.');
+        }
+        
+        function exportNodeData() {
+            alert('📊 Exporting Node Data...\n\nPreparing CSV export of all settings and portfolio data.');
+        }
+        
+        function decommissionNode() {
+            if (confirm('⚠️ WARNING\n\nThis will permanently delete your account and all data.\n\nAre you sure you want to proceed?')) {
+                alert('Account decommission scheduled.\n\nYou will receive a confirmation email.');
+            }
+        }
+        
+        function resetTerminal() {
+            if (confirm('🔄 Reset Terminal?\n\nThis will reset all settings to defaults.')) {
+                alert('Terminal reset complete!\n\nSettings restored to factory defaults.');
+            }
+        }
+        
+        function saveChanges() {
+            alert('💾 Changes Saved!\n\nYour settings have been updated successfully.');
+        }
+        
+        // Theme initialization
+        const savedTheme = localStorage.getItem('qaboot-theme') || 'dark';
+        const htmlElement = document.documentElement;
+        const themeIcon = document.getElementById('theme-icon');
+        
+        if (savedTheme === 'light') {
+            htmlElement.classList.remove('dark');
+            if (themeIcon) themeIcon.textContent = 'dark_mode';
+        } else {
+            htmlElement.classList.add('dark');
+            if (themeIcon) themeIcon.textContent = 'light_mode';
+        }
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const isDark = htmlElement.classList.contains('dark');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('qaboot-theme', 'light');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('qaboot-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+    </script>
+</body></html>

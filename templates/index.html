@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QABOOT V4 PRO - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(28, 31, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(115, 117, 128, 0.1);
+        }
+        .rim-light {
+            box-shadow: inset 0 1px 0 0 rgba(115, 117, 128, 0.15);
+        }
+        
+        /* Toast Container */
+        #toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        
+        .qaboot-toast {
+            min-width: 320px;
+            max-width: 400px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            pointer-events: auto;
+            animation: toastSlideIn 0.3s ease-out;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            background: rgba(28, 31, 43, 0.95);
+            border: 1px solid rgba(115, 117, 128, 0.2);
+        }
+        
+        .qaboot-toast.toast-success { border-color: rgba(63, 255, 139, 0.4); }
+        .qaboot-toast.toast-error { border-color: rgba(255, 113, 108, 0.4); }
+        .qaboot-toast.toast-warning { border-color: rgba(255, 193, 7, 0.4); }
+        .qaboot-toast.toast-info { border-color: rgba(99, 102, 241, 0.4); }
+        
+        .qaboot-toast.toast-exit { animation: toastSlideOut 0.3s ease-in forwards; }
+        
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .qaboot-toast.toast-success .toast-icon { background: rgba(63, 255, 139, 0.2); color: #3fff8b; }
+        .qaboot-toast.toast-error .toast-icon { background: rgba(255, 113, 108, 0.2); color: #ff716c; }
+        .qaboot-toast.toast-warning .toast-icon { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .qaboot-toast.toast-info .toast-icon { background: rgba(99, 102, 241, 0.2); color: #6366f1; }
+        
+        .toast-content { flex: 1; min-width: 0; }
+        .toast-title { font-size: 14px; font-weight: 700; color: #f0f0fd; margin-bottom: 4px; }
+        .toast-message { font-size: 13px; color: #737580; line-height: 1.5; }
+        
+        .toast-close {
+            width: 28px; height: 28px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            background: transparent; border: none; color: #737580;
+            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+        }
+        .toast-close:hover { background: rgba(255, 255, 255, 0.1); color: #f0f0fd; }
+        
+        @keyframes toastSlideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes toastSlideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#006832",
+                        "on-error-container": "#ffa8a3",
+                        "surface-container-low": "#11131d",
+                        "outline": "#737580",
+                        "inverse-primary": "#006e35",
+                        "background": "#0c0e17",
+                        "on-background": "#f0f0fd",
+                        "surface-variant": "#222532",
+                        "primary-dim": "#24f07e",
+                        "on-secondary-fixed": "#003a43",
+                        "secondary-container": "#006876",
+                        "surface-container-lowest": "#000000",
+                        "on-secondary-fixed-variant": "#005965",
+                        "outline-variant": "#464752",
+                        "surface-container": "#171924",
+                        "on-tertiary": "#490006",
+                        "surface-container-highest": "#222532",
+                        "on-surface": "#f0f0fd",
+                        "on-primary-container": "#004f24",
+                        "secondary-fixed-dim": "#40d5ee",
+                        "surface-bright": "#282b3a",
+                        "error": "#ff716c",
+                        "primary-container": "#13ea79",
+                        "on-tertiary-fixed-variant": "#790010",
+                        "surface-container-high": "#1c1f2b",
+                        "tertiary-fixed-dim": "#ff7b75",
+                        "tertiary": "#ff716c",
+                        "on-tertiary-fixed": "#3a0004",
+                        "primary-fixed-dim": "#24f07e",
+                        "on-primary": "#005d2c",
+                        "secondary": "#50e1f9",
+                        "on-secondary-container": "#e9fbff",
+                        "surface-dim": "#0c0e17",
+                        "tertiary-dim": "#ff716c",
+                        "surface": "#0c0e17",
+                        "on-tertiary-container": "#110000",
+                        "on-surface-variant": "#aaaab7",
+                        "tertiary-container": "#f94d4e",
+                        "on-secondary": "#004d58",
+                        "inverse-surface": "#faf8ff",
+                        "tertiary-fixed": "#ff928c",
+                        "inverse-on-surface": "#53545f",
+                        "on-primary-fixed": "#004820",
+                        "secondary-dim": "#3cd2eb",
+                        "error-dim": "#d7383b",
+                        "primary": "#3fff8b",
+                        "primary-fixed": "#3fff8b",
+                        "secondary-fixed": "#54e3fc",
+                        "error-container": "#9f0519",
+                        "on-error": "#490006",
+                        "surface-tint": "#3fff8b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar (Shared Component) -->
+<aside class="w-[280px] h-screen fixed left-0 top-0 bg-[#11131d] border-r border-white/10 flex flex-col py-6 transition-all duration-200 ease-in-out font-['Inter'] text-sm font-medium tracking-tight">
+<div class="px-8 mb-10">
+<h1 class="text-xl font-bold tracking-tighter text-[#f0f0fd]">QABOOT V4 PRO</h1>
+<p class="text-[10px] text-outline uppercase tracking-[0.2em] mt-1">Pro Trader Account</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<!-- Active Navigation -->
+<a class="text-[#00E676] flex items-center gap-3 py-3 px-8 relative before:content-[''] before:absolute before:left-0 before:w-1 before:h-6 before:bg-[#00E676] before:rounded-full hover:bg-white/5 transition-colors" href="/">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-8 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="/portfolio">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span>Portfolio</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-8 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="/trading">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span>Trading</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-8 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="/charts">
+<span class="material-symbols-outlined">monitoring</span>
+<span>Charts</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-8 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="/strategies">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span>Strategies</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-8 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="/signals">
+<span class="material-symbols-outlined">notifications_active</span>
+<span>Signals</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-8 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="/settings">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 flex flex-col gap-1 border-t border-white/5 pt-6">
+<a class="text-[#737580] flex items-center gap-3 py-3 px-4 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+<a class="text-[#737580] flex items-center gap-3 py-3 px-4 transition-colors hover:text-[#f0f0fd] hover:bg-white/5" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Log Out</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Shared Component) -->
+<header class="h-16 w-[calc(100%-280px)] fixed top-0 right-0 z-40 bg-[#0c0e17]/80 backdrop-blur-xl border-b border-white/10 flex items-center justify-between px-8 font-['Inter'] text-sm font-medium">
+<div class="flex items-center gap-8 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+<input class="bg-surface-container-lowest border-none rounded-xl py-2 pl-10 pr-4 w-full text-on-surface focus:ring-1 focus:ring-secondary text-xs transition-all" placeholder="Search markets, assets, or tools..." type="text"/>
+</div>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-[#737580] hover:text-[#50e1f9] transition-opacity" href="#">Markets</a>
+<a class="text-[#737580] hover:text-[#50e1f9] transition-opacity" href="#">Learn</a>
+<a class="text-[#737580] hover:text-[#50e1f9] transition-opacity" href="#">Tools</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<!-- Theme Toggle -->
+<button onclick="toggleTheme()" id="theme-toggle" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container-high transition-all" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+</button>
+<!-- Header Stats -->
+<div class="hidden lg:flex items-center gap-6 pr-6 border-r border-white/10">
+<div class="text-right">
+<p class="text-[10px] text-outline uppercase tracking-tighter">Total Value</p>
+<p class="text-on-surface text-xs font-bold" id="header-total">$40,800.22</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-outline uppercase tracking-tighter">24H P&L</p>
+<p class="text-primary text-xs font-bold" id="header-pnl">+$9,035.22</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-outline uppercase tracking-tighter">Signals</p>
+<p class="text-secondary text-xs font-bold" id="header-signals">9</p>
+</div>
+</div>
+<button class="relative text-[#737580] hover:text-on-surface transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-white/10">
+<div class="text-right hidden sm:block">
+<p class="text-on-surface text-xs font-bold leading-none">Alex Rivera</p>
+<p class="text-[10px] text-outline mt-1 uppercase tracking-tighter">Pro Tier</p>
+</div>
+<img alt="User Profile Avatar" class="w-9 h-9 rounded-full object-cover border border-white/10" data-alt="Close up portrait of a professional man in a dark business environment with soft cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP4qvvNzLmql2DCykVZMqDlFmrbj39LJwf8zhCvY_HIPK9jXxgQu0tWGmcwGTyugKgj-ZEvZBhxNx9Pn7Z2NbeFkcoqUhtb3gHsSQ9gya2FKz-g7M_8u735a-pimomKglq-S1l-_dzqfLpH9zlFoyrF5NSBhPtOaK5CD8yfNPN6VlvW3fBrAgt4BrT2APVsG1ybbArI0ICO1aQftTtDmUPUi6n5IjwpI4fxojuu1z-r3Mv8hBPb-fAjGj59e2Us2DmA1sqsP34k9E"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[280px] pt-24 px-8 pb-12">
+<!-- Header Section -->
+<section class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="text-on-surface-variant text-sm font-semibold tracking-wider uppercase mb-1">Market Overview</h2>
+<h1 class="text-3xl font-black text-on-surface tracking-tight">Portfolio Pulse</h1>
+</div>
+<div class="flex gap-3">
+<button onclick="runAnalysis()" class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-xl text-xs font-semibold hover:bg-surface-bright transition-all border border-white/5 rim-light cursor-pointer">
+                    Run Analysis
+                </button>
+<a href="/trading" class="bg-surface-container-high text-on-surface px-5 py-2.5 rounded-xl text-xs font-semibold hover:bg-surface-bright transition-all border border-white/5 rim-light inline-flex items-center">
+                    Quick Trade
+                </a>
+<a href="/portfolio" class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all inline-flex items-center">
+                    View Portfolio
+                </a>
+</div>
+</section>
+<!-- Stats Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+<!-- Total Value -->
+<div class="glass-card p-6 rounded-full rim-light flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="text-xs text-outline font-semibold uppercase tracking-widest">Total Value</span>
+<span class="material-symbols-outlined text-secondary opacity-60">account_balance_wallet</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold tracking-tight text-on-surface" id="total-value">$31,234.56</h3>
+<p class="text-[10px] text-primary-dim font-medium mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> 
+                        +2.4% vs last week
+                    </p>
+</div>
+</div>
+<!-- 24H P&L -->
+<div class="glass-card p-6 rounded-full rim-light flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="text-xs text-outline font-semibold uppercase tracking-widest">24H P&amp;L</span>
+<span class="material-symbols-outlined text-primary-dim opacity-60">show_chart</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold tracking-tight text-primary-dim" id="pnl">+$1,212.41</h3>
+<div class="w-full bg-surface-container-lowest h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary-dim h-full w-[72%]"></div>
+</div>
+</div>
+</div>
+<!-- Active Signals -->
+<div class="glass-card p-6 rounded-full rim-light flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="text-xs text-outline font-semibold uppercase tracking-widest">Active Signals</span>
+<span class="material-symbols-outlined text-tertiary opacity-60">bolt</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold tracking-tight text-on-surface" id="active-signals">12</h3>
+<p class="text-[10px] text-outline mt-1">4 high conviction picks</p>
+</div>
+</div>
+<!-- Win Rate -->
+<div class="glass-card p-6 rounded-full rim-light flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-secondary/5 blur-2xl rounded-full"></div>
+<div class="flex justify-between items-start">
+<span class="text-xs text-outline font-semibold uppercase tracking-widest">Win Rate</span>
+<span class="material-symbols-outlined text-secondary opacity-60">verified</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold tracking-tight text-on-surface" id="win-rate">68.5%</h3>
+<p class="text-[10px] text-outline mt-1">Global performance average</p>
+</div>
+</div>
+</section>
+<!-- Market Table -->
+<section class="glass-card rounded-full rim-light overflow-hidden">
+<div class="px-8 py-6 border-b border-white/5 flex items-center justify-between">
+<h3 class="text-lg font-bold text-on-surface tracking-tight">Live Market Prices</h3>
+<div class="flex gap-4">
+<span class="flex items-center gap-2 text-[10px] text-outline uppercase tracking-wider font-bold">
+<span class="w-1.5 h-1.5 bg-primary rounded-full pulse-ping"></span>
+                        Live Feed
+                    </span>
+<a href="/portfolio" class="text-secondary text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer">View All Markets</a>
+</div>
+</div>
+<div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-[10px] text-outline uppercase tracking-[0.15em] font-bold">
+<th class="px-8 py-5">Coin</th>
+<th class="px-8 py-5">Price</th>
+<th class="px-8 py-5">24h Change</th>
+<th class="px-8 py-5">24h High</th>
+<th class="px-8 py-5">24h Low</th>
+<th class="px-8 py-5 text-right">Volume</th>
+</tr>
+</thead>
+<tbody class="text-sm font-medium">
+<!-- Table Row 1 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-8 py-6 flex items-center gap-4">
+<div class="w-9 h-9 rounded-xl bg-[#F7931A]/10 flex items-center justify-center">
+<img alt="BTC" class="w-6 h-6 object-contain" data-alt="Bitcoin gold coin logo on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeCgCCWJwDHbvI7O09Qh_wBw6_s9EPeLcmY7iTZ4DF9tkRJFSS1352qS8p_0jceVTKci-gN8P41Gl_DxnMTKX9rla7KlW8DGHBO89E7nWjp8ffZjBJmeuFd_xE9rubbsoq441UHByiTfczP2j8GcyYc4wfWV_GWQX17cyHCNOBoJmtlIN3ri9ZEzq1GmWNnXiSor-5lyOOMWcpVeMei8HPjn-RAh4JrnOXIkTfTNxlbaRcKQvMOEZGC-G_ZqgKMJ6QgsYJYO9ET_A"/>
+</div>
+<div>
+<p class="text-on-surface font-bold">Bitcoin</p>
+<p class="text-[10px] text-outline">BTC</p>
+</div>
+</td>
+<td class="px-8 py-6 font-mono text-on-surface">$64,231.50</td>
+<td class="px-8 py-6 text-primary-dim">
+<span class="bg-primary/10 px-2 py-1 rounded-lg">+4.23%</span>
+</td>
+<td class="px-8 py-6 text-outline">$65,100.00</td>
+<td class="px-8 py-6 text-outline">$61,850.20</td>
+<td class="px-8 py-6 text-right text-on-surface-variant">$28.4B</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-8 py-6 flex items-center gap-4">
+<div class="w-9 h-9 rounded-xl bg-[#627EEA]/10 flex items-center justify-center">
+<img alt="ETH" class="w-6 h-6 object-contain" data-alt="Ethereum crystal logo on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiKkRpmr-sxFPGCXBMU1ytl87EwGInB1arGyH2z73H-ZKqPwy_dDbBKNH0YlpM9BM0m8IS8ew1R_x3jbX2gA8C9r2l52chIC0lu3qNq8sC6aZ0nk0ILkAmjYLLb_6-EuK41h5FrL9fFCzI81RzevAuR8GRGipCtDoT9kfktQd3byYBtUd4D_Z9BrJInDZkaf8QgY5lX57sBQRYMTiXi9d-MfwiQadQ8gj2NJZWb0u3dzKFMQ8iki99pCSP7vI2ux9dx7SZFRPJcg0"/>
+</div>
+<div>
+<p class="text-on-surface font-bold">Ethereum</p>
+<p class="text-[10px] text-outline">ETH</p>
+</div>
+</td>
+<td class="px-8 py-6 font-mono text-on-surface">$3,452.12</td>
+<td class="px-8 py-6 text-error">
+<span class="bg-error/10 px-2 py-1 rounded-lg">-1.15%</span>
+</td>
+<td class="px-8 py-6 text-outline">$3,520.40</td>
+<td class="px-8 py-6 text-outline">$3,410.00</td>
+<td class="px-8 py-6 text-right text-on-surface-variant">$15.2B</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-8 py-6 flex items-center gap-4">
+<div class="w-9 h-9 rounded-xl bg-[#14F195]/10 flex items-center justify-center">
+<img alt="SOL" class="w-6 h-6 object-contain" data-alt="Solana geometric logo with neon green and purple gradients" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8Iy8MJDljfhaQeAyEKfPyKWvgSFmOZaZZfnvsvtCwoH5hpT_Clfjj1PCKBbcB5dj5uUeJXiTTHol5cQ9sMpQlCYwEPrIbRh4QJlL1fWEg0MvukhxmCvFRHerQ1vAhIfFw9ThD2aHUgHEBsweoRwVy4lRtbsR6wOOcKiB_rRvdw59ec0qVsZR3Uqa0rrrMcqIi58MXUXAKq0ogb67yzkiZcc_zGqMYbEyGyjNTp8467Ay2jBgeFP0MUstlbsW1PXUyrUVJdi8AGfc"/>
+</div>
+<div>
+<p class="text-on-surface font-bold">Solana</p>
+<p class="text-[10px] text-outline">SOL</p>
+</div>
+</td>
+<td class="px-8 py-6 font-mono text-on-surface">$145.88</td>
+<td class="px-8 py-6 text-primary-dim">
+<span class="bg-primary/10 px-2 py-1 rounded-lg">+8.92%</span>
+</td>
+<td class="px-8 py-6 text-outline">$148.20</td>
+<td class="px-8 py-6 text-outline">$132.50</td>
+<td class="px-8 py-6 text-right text-on-surface-variant">$4.8B</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-8 py-6 flex items-center gap-4">
+<div class="w-9 h-9 rounded-xl bg-[#26A17B]/10 flex items-center justify-center">
+<img alt="USDT" class="w-6 h-6 object-contain" data-alt="Tether USDT green shield logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMCcfmCNucVsqMybnz-Wu50vyBqRIZFGE12Q2_RbSmhEAwO7Yxr1wFRLwLLkK07LoTXH08LP_mab-vdxRPxpHPUbK6eC85YACQTYuNriBZKIHLnsB8W9TAMdfPYOW3FmMsys-J13DieLMjeMPZZZiERLqZ7KqAd4afyBkhbnYfGT9EXDwjE9KMQyY69lpymyG4e-g8lSqiOhj88Kd6OD3MUibJEVJo2AMBAwXamJo4mBNcHuYOw2Y_a-DaF5oQctClKTBhCHB2Rf8"/>
+</div>
+<div>
+<p class="text-on-surface font-bold">Tether</p>
+<p class="text-[10px] text-outline">USDT</p>
+</div>
+</td>
+<td class="px-8 py-6 font-mono text-on-surface">$1.00</td>
+<td class="px-8 py-6 text-outline">
+<span class="bg-white/5 px-2 py-1 rounded-lg">0.00%</span>
+</td>
+<td class="px-8 py-6 text-outline">$1.0002</td>
+<td class="px-8 py-6 text-outline">$0.9998</td>
+<td class="px-8 py-6 text-right text-on-surface-variant">$42.1B</td>
+</tr>
+<!-- Rows 5-25: Additional Coins -->
+<tr class="group hover:bg-white/5 transition-colors" data-coin="XRP"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#23292F]/10 flex items-center justify-center font-bold text-[#23292F]">X</div><div><p class="text-on-surface font-bold">XRP</p><p class="text-[10px] text-outline">XRP</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="BNB"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#F3BA2F]/10 flex items-center justify-center font-bold text-[#F3BA2F]">B</div><div><p class="text-on-surface font-bold">BNB</p><p class="text-[10px] text-outline">BNB</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="DOGE"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#C2A633]/10 flex items-center justify-center font-bold text-[#C2A633]">Ð</div><div><p class="text-on-surface font-bold">Dogecoin</p><p class="text-[10px] text-outline">DOGE</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="ADA"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#0033AD]/10 flex items-center justify-center font-bold text-[#0033AD]">A</div><div><p class="text-on-surface font-bold">Cardano</p><p class="text-[10px] text-outline">ADA</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="AVAX"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#E84142]/10 flex items-center justify-center font-bold text-[#E84142]">A</div><div><p class="text-on-surface font-bold">Avalanche</p><p class="text-[10px] text-outline">AVAX</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="DOT"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#E6007A]/10 flex items-center justify-center font-bold text-[#E6007A]">●</div><div><p class="text-on-surface font-bold">Polkadot</p><p class="text-[10px] text-outline">DOT</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="LINK"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#2A5ADA]/10 flex items-center justify-center font-bold text-[#2A5ADA]">L</div><div><p class="text-on-surface font-bold">Chainlink</p><p class="text-[10px] text-outline">LINK</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="TRX"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#FF060A]/10 flex items-center justify-center font-bold text-[#FF060A]">T</div><div><p class="text-on-surface font-bold">TRON</p><p class="text-[10px] text-outline">TRX</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="MATIC"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#8247E5]/10 flex items-center justify-center font-bold text-[#8247E5]">M</div><div><p class="text-on-surface font-bold">Polygon</p><p class="text-[10px] text-outline">MATIC</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="UNI"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#FF007A]/10 flex items-center justify-center font-bold text-[#FF007A]">U</div><div><p class="text-on-surface font-bold">Uniswap</p><p class="text-[10px] text-outline">UNI</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="LTC"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#BFBBBB]/10 flex items-center justify-center font-bold text-[#BFBBBB]">Ł</div><div><p class="text-on-surface font-bold">Litecoin</p><p class="text-[10px] text-outline">LTC</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="ATOM"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#2E3148]/10 flex items-center justify-center font-bold text-[#2E3148]">A</div><div><p class="text-on-surface font-bold">Cosmos</p><p class="text-[10px] text-outline">ATOM</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="XLM"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#15B5E4]/10 flex items-center justify-center font-bold text-[#15B5E4]">X</div><div><p class="text-on-surface font-bold">Stellar</p><p class="text-[10px] text-outline">XLM</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="ALGO"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#00A4E0]/10 flex items-center justify-center font-bold text-[#00A4E0]">A</div><div><p class="text-on-surface font-bold">Algorand</p><p class="text-[10px] text-outline">ALGO</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="VET"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#15BDF5]/10 flex items-center justify-center font-bold text-[#15BDF5]">V</div><div><p class="text-on-surface font-bold">VeChain</p><p class="text-[10px] text-outline">VET</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="FIL"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#0090FF]/10 flex items-center justify-center font-bold text-[#0090FF]">F</div><div><p class="text-on-surface font-bold">Filecoin</p><p class="text-[10px] text-outline">FIL</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="THETA"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#2B57A3]/10 flex items-center justify-center font-bold text-[#2B57A3]">Θ</div><div><p class="text-on-surface font-bold">Theta</p><p class="text-[10px] text-outline">THETA</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="XTZ"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#0E61B5]/10 flex items-center justify-center font-bold text-[#0E61B5]">T</div><div><p class="text-on-surface font-bold">Tezos</p><p class="text-[10px] text-outline">XTZ</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="AAVE"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#B6509E]/10 flex items-center justify-center font-bold text-[#B6509E]">A</div><div><p class="text-on-surface font-bold">Aave</p><p class="text-[10px] text-outline">AAVE</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="GRT"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#6747ED]/10 flex items-center justify-center font-bold text-[#6747ED]">G</div><div><p class="text-on-surface font-bold">The Graph</p><p class="text-[10px] text-outline">GRT</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="COMP"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#00D395]/10 flex items-center justify-center font-bold text-[#00D395]">C</div><div><p class="text-on-surface font-bold">Compound</p><p class="text-[10px] text-outline">COMP</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="TAO"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#14F195]/10 flex items-center justify-center font-bold text-[#14F195]">τ</div><div><p class="text-on-surface font-bold">Bittensor</p><p class="text-[10px] text-outline">TAO</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="NEAR"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#00C1DE]/10 flex items-center justify-center font-bold text-[#00C1DE]">N</div><div><p class="text-on-surface font-bold">NEAR Protocol</p><p class="text-[10px] text-outline">NEAR</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+<tr class="group hover:bg-white/5 transition-colors" data-coin="FET"><td class="px-8 py-6 flex items-center gap-4"><div class="w-9 h-9 rounded-xl bg-[#1F5AF6]/10 flex items-center justify-center font-bold text-[#1F5AF6]">F</div><div><p class="text-on-surface font-bold">Fetch.ai</p><p class="text-[10px] text-outline">FET</p></div></td><td class="px-8 py-6 font-mono text-on-surface" data-field="price">--</td><td class="px-8 py-6" data-field="change"><span class="bg-white/5 px-2 py-1 rounded-lg">--</span></td><td class="px-8 py-6 text-outline" data-field="high">--</td><td class="px-8 py-6 text-outline" data-field="low">--</td><td class="px-8 py-6 text-right text-on-surface-variant" data-field="volume">--</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Bottom Banner / Status -->
+<footer class="mt-12 flex justify-between items-center text-[10px] text-outline uppercase tracking-widest font-bold">
+<div class="flex gap-8">
+<span class="flex items-center gap-2">
+<span class="w-1 h-1 bg-primary rounded-full"></span>
+                    Engine: Active
+                </span>
+<span class="flex items-center gap-2">
+<span class="w-1 h-1 bg-primary rounded-full"></span>
+                    API Latency: 12ms
+                </span>
+</div>
+<div class="flex items-center gap-1">
+                Last updated: 14:32:01 UTC
+                <span class="material-symbols-outlined text-[12px]">refresh</span>
+</div>
+</footer>
+</main>
+    
+    <!-- Stitch API Integration -->
+    <script src="{{ url_for('static', filename='js/stitch_api.js') }}?v=1"></script>
+    <!-- Real Data API -->
+    <script src="{{ url_for('static', filename='js/qaboot_real_data.js') }}?v=1"></script>
+    <!-- Market Populate Script - REBUILDS table with real data -->
+    <script src="{{ url_for('static', filename='js/market_populate.js') }}?v=2"></script>
+    
+    <!-- Theme Toggle Script -->
+    <script>
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('qaboot-theme') || 'dark';
+        const htmlElement = document.documentElement;
+        const themeIcon = document.getElementById('theme-icon');
+        
+        // Apply saved theme
+        if (savedTheme === 'light') {
+            htmlElement.classList.remove('dark');
+            if (themeIcon) themeIcon.textContent = 'dark_mode';
+        } else {
+            htmlElement.classList.add('dark');
+            if (themeIcon) themeIcon.textContent = 'light_mode';
+        }
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const isDark = htmlElement.classList.contains('dark');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('qaboot-theme', 'light');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('qaboot-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+            
+            // Trigger custom event for other components
+            window.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark: !isDark } }));
+        }
+    </script>
+    
+    <!-- Toast Notifications Script -->
+    <script>
+        // Toast Notification System
+        (function() {
+            'use strict';
+            
+            function createToastContainer() {
+                let container = document.getElementById('toast-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'toast-container';
+                    document.body.appendChild(container);
+                }
+                return container;
+            }
+            
+            function getToastIcon(type) {
+                const icons = { success: 'check_circle', error: 'error', warning: 'warning', info: 'info' };
+                return icons[type] || 'info';
+            }
+            
+            window.showToast = function(type, title, message, duration = 5000) {
+                const container = createToastContainer();
+                const toast = document.createElement('div');
+                toast.className = `qaboot-toast toast-${type}`;
+                toast.innerHTML = `
+                    <div class="toast-icon">
+                        <span class="material-symbols-outlined">${getToastIcon(type)}</span>
+                    </div>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="closeToast(this)">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                `;
+                container.appendChild(toast);
+                setTimeout(() => closeToastElement(toast), duration);
+                return toast;
+            };
+            
+            window.closeToast = function(button) {
+                const toast = button.closest('.qaboot-toast');
+                if (toast) closeToastElement(toast);
+            };
+            
+            function closeToastElement(toast) {
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }
+            
+            // Helper functions
+            window.toastSuccess = (title, message, duration) => showToast('success', title, message, duration);
+            window.toastError = (title, message, duration) => showToast('error', title, message, duration);
+            window.toastWarning = (title, message, duration) => showToast('warning', title, message, duration);
+            window.toastInfo = (title, message, duration) => showToast('info', title, message, duration);
+            
+            console.log('✅ Toast System loaded');
+        })();
+        
+        // Update runAnalysis to use toast
+        function runAnalysis() {
+            const btn = document.querySelector('button[onclick="runAnalysis()"]');
+            if (btn) {
+                btn.textContent = 'Analyzing...';
+                btn.disabled = true;
+                
+                toastInfo('Analysis Started', 'Processing market data...', 2000);
+                
+                setTimeout(() => {
+                    toastSuccess('Analysis Complete', 'Market Trend: Bullish\nBest: BTC (+4.23%), SOL (+8.92%)', 6000);
+                    btn.textContent = 'Run Analysis';
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+    </script>
+</body></html>

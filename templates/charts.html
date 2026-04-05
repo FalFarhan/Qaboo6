@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QABOOT V4 PRO - Charts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(28, 31, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(115, 117, 128, 0.1);
+        }
+        .candle-green { fill: #3fff8b; stroke: #3fff8b; }
+        .candle-red { fill: #ff716c; stroke: #ff716c; }
+        .chart-grid { stroke: rgba(115, 117, 128, 0.1); stroke-width: 1; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#0c0e17",
+                        "tertiary": "#ff716c",
+                        "surface-variant": "#222532",
+                        "secondary-fixed": "#54e3fc",
+                        "inverse-on-surface": "#53545f",
+                        "tertiary-dim": "#ff716c",
+                        "on-secondary-container": "#e9fbff",
+                        "secondary-container": "#006876",
+                        "inverse-primary": "#006e35",
+                        "outline": "#737580",
+                        "on-tertiary-container": "#110000",
+                        "error-container": "#9f0519",
+                        "surface-container-low": "#11131d",
+                        "on-secondary-fixed-variant": "#005965",
+                        "primary-fixed-dim": "#24f07e",
+                        "primary-container": "#13ea79",
+                        "surface-container-highest": "#222532",
+                        "primary": "#3fff8b",
+                        "on-primary": "#005d2c",
+                        "error-dim": "#d7383b",
+                        "on-tertiary": "#490006",
+                        "surface-bright": "#282b3a",
+                        "on-primary-container": "#004f24",
+                        "background": "#0c0e17",
+                        "surface": "#0c0e17",
+                        "on-tertiary-fixed-variant": "#790010",
+                        "secondary": "#50e1f9",
+                        "on-primary-fixed": "#004820",
+                        "tertiary-fixed": "#ff928c",
+                        "on-secondary-fixed": "#003a43",
+                        "on-error-container": "#ffa8a3",
+                        "on-secondary": "#004d58",
+                        "outline-variant": "#464752",
+                        "on-primary-fixed-variant": "#006832",
+                        "on-error": "#490006",
+                        "tertiary-fixed-dim": "#ff7b75",
+                        "on-surface": "#f0f0fd",
+                        "surface-tint": "#3fff8b",
+                        "on-tertiary-fixed": "#3a0004",
+                        "on-background": "#f0f0fd",
+                        "inverse-surface": "#faf8ff",
+                        "surface-container-high": "#1c1f2b",
+                        "secondary-dim": "#3cd2eb",
+                        "on-surface-variant": "#aaaab7",
+                        "surface-container": "#171924",
+                        "primary-dim": "#24f07e",
+                        "primary-fixed": "#3fff8b",
+                        "secondary-fixed-dim": "#40d5ee",
+                        "tertiary-container": "#f94d4e",
+                        "error": "#ff716c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-[#11131d] dark:bg-[#11131d] border-r border-white/10 w-[280px] h-screen fixed left-0 top-0 flex flex-col py-8 px-4 z-50">
+<div class="mb-12 px-4">
+<h1 class="text-xl font-bold tracking-tighter text-[#f0f0fd]">QABOOT <span class="text-xs font-normal opacity-50 tracking-widest block">V4 PRO</span></h1>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#737580] hover:text-[#f0f0fd] hover:bg-white/5 transition-colors font-['Inter'] font-medium text-sm tracking-tight" href="/">
+<span class="material-symbols-outlined">grid_view</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#737580] hover:text-[#f0f0fd] hover:bg-white/5 transition-colors font-['Inter'] font-medium text-sm tracking-tight" href="/portfolio">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                Portfolio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#737580] hover:text-[#f0f0fd] hover:bg-white/5 transition-colors font-['Inter'] font-medium text-sm tracking-tight" href="/trading">
+<span class="material-symbols-outlined">swap_horiz</span>
+                Trading
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#00E676] border-l-4 border-[#00E676] bg-gradient-to-r from-[#00E676]/10 to-transparent font-['Inter'] font-medium text-sm tracking-tight" href="/charts">
+<span class="material-symbols-outlined">monitoring</span>
+                Charts
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#737580] hover:text-[#f0f0fd] hover:bg-white/5 transition-colors font-['Inter'] font-medium text-sm tracking-tight" href="/strategies">
+<span class="material-symbols-outlined">psychology</span>
+                Strategies
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#737580] hover:text-[#f0f0fd] hover:bg-white/5 transition-colors font-['Inter'] font-medium text-sm tracking-tight" href="/signals">
+<span class="material-symbols-outlined">sensors</span>
+                Signals
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#737580] hover:text-[#f0f0fd] hover:bg-white/5 transition-colors font-['Inter'] font-medium text-sm tracking-tight" href="/settings">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto px-4 pt-8">
+<div class="flex items-center gap-3 p-3 glass-panel rounded-xl">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="professional male trader portrait in studio lighting with soft highlights and dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjGtaBbSGx5UjTWrOWdesbou_YnefDhxt855kOtlaiQ04sJZX4cjt0icxUTtKIO8LdtwpTMoVsZJCQ5mar8SAB--cPRkSoCIlNq8wRxAOPDkfH9W2To1FpsBmyf8-HTFPFsQYK5JekFH6t1wYw6H8bsD7PAtR6Z_T7N-bM_Uzvwu_YXFndrVXR7RuOPJBrPDXkf-Tzlhn4kqMd9KflGTsdWclHIuyPRG8EVH8irnzu8w_h2yH9qKD5eQT18JgDfpdVOCEhR6YVu9g"/>
+</div>
+<div>
+<p class="text-sm font-semibold text-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-primary uppercase tracking-widest font-bold">Pro Trader</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-[280px] h-16 bg-[#0c0e17]/70 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-8 w-full z-40">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-container-lowest border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-64 focus:ring-1 focus:ring-secondary text-on-surface" placeholder="Search markets..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-[10px] font-bold tracking-widest text-outline uppercase">Live Network</span>
+</div>
+<!-- Theme Toggle -->
+<button onclick="toggleTheme()" id="theme-toggle" class="w-10 h-10 hover:bg-white/10 rounded-full transition-all flex items-center justify-center text-outline hover:text-on-surface" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+</button>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-white/10 rounded-full transition-all flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">notifications</span>
+</button>
+<button class="p-2 hover:bg-white/10 rounded-full transition-all flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[280px] mt-16 p-6 h-[calc(100vh-64px)] grid grid-cols-12 gap-6">
+<!-- Left: Charting Module (70%) -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-4">
+<!-- Chart Controls Bar -->
+<div class="glass-panel rounded-xl p-3 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-1.5 rounded-lg border border-white/5 hover:border-primary/50 transition-colors" onclick="showSymbolSelector()">
+<span class="font-bold text-sm" id="current-symbol">BTC</span>
+<span class="text-xs text-on-surface-variant">/</span>
+<span class="text-sm text-on-surface-variant" id="current-pair">USDT</span>
+<span class="material-symbols-outlined text-xs">expand_more</span>
+</button>
+<div class="h-6 w-[1px] bg-white/10"></div>
+<div class="flex bg-surface-container-lowest rounded-lg p-1">
+<button class="timeframe-btn px-3 py-1 text-xs text-outline hover:text-on-surface transition-colors" data-tf="15m" onclick="setTimeframe('15m')">15m</button>
+<button class="timeframe-btn px-3 py-1 text-xs text-outline hover:text-on-surface transition-colors" data-tf="1h" onclick="setTimeframe('1h')">1h</button>
+<button class="timeframe-btn px-3 py-1 text-xs bg-surface-container-highest text-primary rounded-md font-bold" data-tf="4h" onclick="setTimeframe('4h')">4h</button>
+<button class="timeframe-btn px-3 py-1 text-xs text-outline hover:text-on-surface transition-colors" data-tf="1D" onclick="setTimeframe('1D')">1D</button>
+<button class="timeframe-btn px-3 py-1 text-xs text-outline hover:text-on-surface transition-colors" data-tf="1W" onclick="setTimeframe('1W')">1W</button>
+</div>
+<div class="flex gap-2">
+<button class="chart-type-btn p-1.5 bg-surface-container-highest text-primary rounded-md" data-type="candlestick" onclick="setChartType('candlestick')">
+<span class="material-symbols-outlined text-sm">candlestick_chart</span>
+</button>
+<button class="chart-type-btn p-1.5 text-outline hover:text-on-surface" data-type="line" onclick="setChartType('line')">
+<span class="material-symbols-outlined text-sm">show_chart</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 border border-white/5 rounded-lg text-xs text-outline">
+<span class="font-medium">Indicators:</span>
+<span class="text-primary font-bold">MA, RSI, BB</span>
+<span class="material-symbols-outlined text-xs">settings</span>
+</div>
+<button onclick="switchToTrading()" class="bg-primary text-on-primary text-xs font-bold px-4 py-1.5 rounded-lg shadow-lg shadow-primary/20 cursor-pointer hover:brightness-110">TRADE NOW</button>
+</div>
+</div>
+<!-- Main Candlestick Chart Area -->
+<div class="glass-panel rounded-xl flex-grow relative overflow-hidden flex flex-col">
+<!-- SVG Chart Mockup -->
+<div class="flex-grow relative p-4 flex">
+<div class="flex-grow relative">
+<svg class="w-full h-full" id="main-chart-svg" preserveaspectratio="none" viewbox="0 0 1000 400">
+<!-- Grid Lines -->
+<line class="chart-grid" x1="0" x2="1000" y1="50" y2="50"></line>
+<line class="chart-grid" x1="0" x2="1000" y1="150" y2="150"></line>
+<line class="chart-grid" x1="0" x2="1000" y1="250" y2="250"></line>
+<line class="chart-grid" x1="0" x2="1000" y1="350" y2="350"></line>
+<!-- Candlesticks Mockup -->
+<g transform="translate(50,0)">
+<rect class="candle-red" height="60" width="12" x="20" y="200"></rect>
+<line class="candle-red" x1="26" x2="26" y1="180" y2="280"></line>
+<rect class="candle-green" height="50" width="12" x="60" y="150"></rect>
+<line class="candle-green" x1="66" x2="66" y1="130" y2="220"></line>
+<rect class="candle-green" height="50" width="12" x="100" y="100"></rect>
+<line class="candle-green" x1="106" x2="106" y1="80" y2="170"></line>
+<rect class="candle-red" height="40" width="12" x="140" y="120"></rect>
+<line class="candle-red" x1="146" x2="146" y1="100" y2="180"></line>
+<rect class="candle-green" height="30" width="12" x="180" y="90"></rect>
+<line class="candle-green" x1="186" x2="186" y1="70" y2="140"></line>
+<rect class="candle-green" height="50" width="12" x="220" y="40"></rect>
+<line class="candle-green" x1="226" x2="226" y1="20" y2="110"></line>
+<rect class="candle-red" height="60" width="12" x="260" y="60"></rect>
+<line class="candle-red" x1="266" x2="266" y1="40" y2="140"></line>
+<rect class="candle-red" height="40" width="12" x="300" y="100"></rect>
+<line class="candle-red" x1="306" x2="306" y1="80" y2="160"></line>
+<rect class="candle-green" height="20" width="12" x="340" y="80"></rect>
+<line class="candle-green" x1="346" x2="346" y1="60" y2="120"></line>
+<!-- Price Indicator Line -->
+<line stroke="#3fff8b" stroke-dasharray="4" stroke-width="1.5" x1="0" x2="1000" y1="80" y2="80"></line>
+</g>
+</svg>
+</div>
+<!-- Right Axis -->
+<div class="w-16 h-full flex flex-col justify-between text-[10px] text-outline text-right pl-2 border-l border-white/5 py-4">
+<span>72,000.00</span>
+<span>70,000.00</span>
+<div class="bg-primary text-on-primary px-1 py-0.5 rounded-sm font-bold text-[9px]">64,231.50</div>
+<span>62,000.00</span>
+<span>60,000.00</span>
+<span>58,000.00</span>
+</div>
+</div>
+<!-- Indicators Panel (Bottom of Chart) -->
+<div class="h-48 border-t border-white/5 flex flex-col p-4 gap-4">
+<div class="flex-grow flex gap-4">
+<!-- RSI -->
+<div class="flex-grow flex flex-col">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider">RSI (14) <span class="text-secondary ml-2">64.21</span></span>
+</div>
+<div class="flex-grow border-b border-white/5 relative">
+<svg class="w-full h-full" preserveaspectratio="none">
+<path d="M0 40 Q 50 10 100 30 T 200 20 T 300 50 T 400 10 T 500 30 T 600 20 T 700 40 T 800 10" fill="none" stroke="#50e1f9" stroke-width="1.5 opacity-60"></path>
+<line stroke="rgba(255,255,255,0.05)" stroke-dasharray="2" x1="0" x2="1000" y1="15" y2="15"></line>
+<line stroke="rgba(255,255,255,0.05)" stroke-dasharray="2" x1="0" x2="1000" y1="35" y2="35"></line>
+</svg>
+</div>
+</div>
+<!-- Volume -->
+<div class="w-48 flex flex-col">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider">Volume <span class="text-on-surface ml-2">12.4K</span></span>
+</div>
+<div class="flex-grow flex items-end gap-[1px]">
+<div class="w-full h-1/2 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-3/4 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-2/3 bg-error/20 rounded-t-sm"></div>
+<div class="w-full h-1/2 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-5/6 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-1/4 bg-error/20 rounded-t-sm"></div>
+<div class="w-full h-2/3 bg-error/20 rounded-t-sm"></div>
+<div class="w-full h-1/2 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-3/4 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-2/3 bg-error/20 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Time Axis -->
+<div class="flex justify-between text-[10px] text-outline px-4 border-t border-white/5 pt-2">
+<span>12:00</span>
+<span>16:00</span>
+<span>20:00</span>
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right: Price & Order Book (30%) -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-6 overflow-hidden">
+<!-- Price Info Panel -->
+<div class="glass-panel rounded-xl p-6 flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="text-outline text-xs font-bold uppercase tracking-widest mb-1">Last Traded Price</h2>
+<div class="flex items-baseline gap-3">
+<span class="text-4xl font-black tracking-tighter text-on-surface">$64,231.50</span>
+<span class="text-primary font-bold text-sm bg-primary/10 px-2 py-0.5 rounded">+4.23%</span>
+</div>
+</div>
+<button class="p-2 glass-panel rounded-full text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-y-4 gap-x-8">
+<div>
+<p class="text-[10px] text-outline uppercase tracking-widest font-bold">24h High</p>
+<p class="text-sm font-semibold">$65,100.00</p>
+</div>
+<div>
+<p class="text-[10px] text-outline uppercase tracking-widest font-bold">24h Low</p>
+<p class="text-sm font-semibold">$61,850.00</p>
+</div>
+<div>
+<p class="text-[10px] text-outline uppercase tracking-widest font-bold">24h Volume</p>
+<p class="text-sm font-semibold">124,512 BTC</p>
+</div>
+<div>
+<p class="text-[10px] text-outline uppercase tracking-widest font-bold">Market Cap</p>
+<p class="text-sm font-semibold">$1.2T</p>
+</div>
+</div>
+</div>
+<!-- Order Book -->
+<div class="glass-panel rounded-xl flex-grow flex flex-col overflow-hidden">
+<div class="p-4 border-b border-white/5 flex items-center justify-between">
+<h3 class="text-xs font-black tracking-widest uppercase text-on-surface">Order Book</h3>
+<div class="flex gap-1">
+<div class="w-4 h-4 bg-error/20 border border-error/40 rounded-sm"></div>
+<div class="w-4 h-4 bg-primary/20 border border-primary/40 rounded-sm"></div>
+</div>
+</div>
+<div class="flex-grow flex flex-col overflow-hidden">
+<!-- Column Headers -->
+<div class="grid grid-cols-3 px-4 py-2 text-[10px] font-bold text-outline uppercase tracking-widest border-b border-white/5">
+<span>Price (USDT)</span>
+<span class="text-right">Amount (BTC)</span>
+<span class="text-right">Total</span>
+</div>
+<!-- Sell Orders (Red) -->
+<div class="flex-grow flex flex-col-reverse overflow-hidden scrollbar-hide py-2" id="asks-container">
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-error/10 w-[45%]"></div>
+<span class="text-tertiary font-medium relative">64,245.00</span>
+<span class="text-right text-on-surface relative">0.1250</span>
+<span class="text-right text-outline relative">8,030.6</span>
+</div>
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-error/10 w-[70%]"></div>
+<span class="text-tertiary font-medium relative">64,242.50</span>
+<span class="text-right text-on-surface relative">0.8201</span>
+<span class="text-right text-outline relative">52,683.4</span>
+</div>
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-error/10 w-[12%]"></div>
+<span class="text-tertiary font-medium relative">64,240.00</span>
+<span class="text-right text-on-surface relative">0.0540</span>
+<span class="text-right text-outline relative">3,468.9</span>
+</div>
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-error/10 w-[25%]"></div>
+<span class="text-tertiary font-medium relative">64,238.20</span>
+<span class="text-right text-on-surface relative">0.1230</span>
+<span class="text-right text-outline relative">7,901.3</span>
+</div>
+</div>
+<!-- Current Price Middle Spread -->
+<div class="bg-surface-container py-3 px-4 flex justify-between items-center border-y border-white/10">
+<div class="flex items-center gap-2">
+<span class="text-primary font-black text-lg">64,231.50</span>
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+</div>
+<span class="text-[10px] text-outline font-bold tracking-widest uppercase">Spread: $2.40</span>
+</div>
+<!-- Buy Orders (Green) -->
+<div class="flex-grow flex flex-col overflow-hidden scrollbar-hide py-2" id="bids-container">
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-primary/10 w-[85%]"></div>
+<span class="text-primary font-medium relative">64,229.00</span>
+<span class="text-right text-on-surface relative">1.2500</span>
+<span class="text-right text-outline relative">80,286.2</span>
+</div>
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-primary/10 w-[30%]"></div>
+<span class="text-primary font-medium relative">64,226.50</span>
+<span class="text-right text-on-surface relative">0.3200</span>
+<span class="text-right text-outline relative">20,552.4</span>
+</div>
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-primary/10 w-[15%]"></div>
+<span class="text-primary font-medium relative">64,224.00</span>
+<span class="text-right text-on-surface relative">0.1420</span>
+<span class="text-right text-outline relative">9,119.8</span>
+</div>
+<div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+<div class="absolute inset-y-0 right-0 bg-primary/10 w-[55%]"></div>
+<span class="text-primary font-medium relative">64,221.80</span>
+<span class="text-right text-on-surface relative">0.6540</span>
+<span class="text-right text-outline relative">42,001.0</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Background Decoration -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40">
+<div class="absolute top-[10%] right-[5%] w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[5%] left-[20%] w-[400px] h-[400px] bg-secondary/10 blur-[120px] rounded-full"></div>
+</div>
+</body>
+    <!-- Real Data API -->
+    <script src="{{ url_for('static', filename='js/charts_real.js') }}?v=1"></script>
+    <!-- Charts Populate Script -->
+    <script src="{{ url_for('static', filename='js/charts_populate.js') }}?v=1"></script>
+    <!-- Charts Interactive Script -->
+    <script>
+        // State management
+        let currentChartType = 'candlestick';
+        let currentTimeframe = '4h';
+        let currentSymbol = 'BTC';
+        
+        // Timeframe switching
+        function setTimeframe(tf) {
+            currentTimeframe = tf;
+            
+            // Update UI
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.classList.remove('bg-surface-container-highest', 'text-primary', 'font-bold');
+                btn.classList.add('text-outline');
+            });
+            event.target.classList.add('bg-surface-container-highest', 'text-primary', 'font-bold');
+            event.target.classList.remove('text-outline');
+            
+            // Reload chart data
+            console.log(`Loading ${tf} data for ${currentSymbol}`);
+            generateCandles();
+        }
+        
+        // Chart type switching
+        function setChartType(type) {
+            currentChartType = type;
+            
+            // Update UI
+            document.querySelectorAll('.chart-type-btn').forEach(btn => {
+                btn.classList.remove('bg-surface-container-highest', 'text-primary');
+            });
+            event.target.closest('button').classList.add('bg-surface-container-highest', 'text-primary');
+            
+            // Regenerate chart
+            if (type === 'line') {
+                showLineChart();
+            } else {
+                generateCandles();
+            }
+        }
+        
+        // Generate professional candlestick data with realistic OHLC values
+        function generateCandles() {
+            const svg = document.getElementById('main-chart-svg');
+            if (!svg) return;
+            
+            // Base price based on symbol
+            let basePrice = currentSymbol === 'BTC' ? 65000 : 
+                            currentSymbol === 'ETH' ? 2050 : 
+                            currentSymbol === 'SOL' ? 79.5 : 
+                            currentSymbol === 'BNB' ? 550 : 100;
+            
+            // Volatility based on timeframe
+            let volatility = currentTimeframe === '15m' ? 0.002 : 
+                             currentTimeframe === '1h' ? 0.005 : 
+                             currentTimeframe === '4h' ? 0.01 : 
+                             currentTimeframe === '1D' ? 0.025 : 0.05;
+            
+            // Number of candles
+            let candleCount = 20;
+            let candleWidth = 30;
+            let gap = 40;
+            
+            // Generate candles
+            let candles = [];
+            let price = basePrice;
+            
+            for (let i = 0; i < candleCount; i++) {
+                const change = (Math.random() - 0.48) * price * volatility;
+                const open = price;
+                const close = open + change;
+                const body = Math.abs(close - open);
+                const wickHigh = body * (0.3 + Math.random() * 0.4);
+                const wickLow = body * (0.3 + Math.random() * 0.4);
+                const high = Math.max(open, close) + wickHigh;
+                const low = Math.min(open, close) - wickLow;
+                
+                candles.push({
+                    x: 50 + i * gap,
+                    open: open,
+                    close: close,
+                    high: high,
+                    low: low,
+                    isBullish: close >= open
+                });
+                
+                price = close;
+            }
+            
+            // Calculate min and max for scaling
+            const allPrices = candles.flatMap(c => [c.high, c.low]);
+            const minPrice = Math.min(...allPrices);
+            const maxPrice = Math.max(...allPrices);
+            const priceRange = maxPrice - minPrice;
+            
+            // SVG dimensions
+            const svgWidth = 1000;
+            const svgHeight = 400;
+            const chartHeight = 300;
+            const topPadding = 50;
+            
+            // Generate SVG content
+            let candlesHTML = `
+                <defs>
+                    <linearGradient id="bullGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#3fff8b;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#13ea79;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="bearGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff716c;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#9f0519;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <!-- Grid Lines -->
+                <line class="chart-grid" x1="0" x2="1000" y1="50" y2="50"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="125" y2="125"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="200" y2="200"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="275" y2="275"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="350" y2="350"/>
+                <g id="candles-group">
+            `;
+            
+            // Draw candles
+            candles.forEach((candle, i) => {
+                const openY = topPadding + ((maxPrice - candle.open) / priceRange) * chartHeight;
+                const closeY = topPadding + ((maxPrice - candle.close) / priceRange) * chartHeight;
+                const highY = topPadding + ((maxPrice - candle.high) / priceRange) * chartHeight;
+                const lowY = topPadding + ((maxPrice - candle.low) / priceRange) * chartHeight;
+                
+                const bodyTop = Math.min(openY, closeY);
+                const bodyHeight = Math.max(Math.abs(closeY - openY), 2);
+                const color = candle.isBullish ? 'url(#bullGradient)' : 'url(#bearGradient)';
+                const wickColor = candle.isBullish ? '#3fff8b' : '#ff716c';
+                
+                // Wick
+                candlesHTML += `<line x1="${candle.x + candleWidth/2}" y1="${highY}" x2="${candle.x + candleWidth/2}" y2="${lowY}" stroke="${wickColor}" stroke-width="1"/>`;
+                // Body
+                candlesHTML += `<rect x="${candle.x}" y="${bodyTop}" width="${candleWidth}" height="${bodyHeight}" fill="${color}" rx="1"/>`;
+            });
+            
+            candlesHTML += `</g>`;
+            
+            // Add current price line
+            const lastClose = candles[candles.length - 1].close;
+            const lastY = topPadding + ((maxPrice - lastClose) / priceRange) * chartHeight;
+            candlesHTML += `<line stroke="#3fff8b" stroke-dasharray="4" stroke-width="1.5" x1="0" x2="1000" y1="${lastY}" y2="${lastY}"/>`;
+            
+            // Update price labels on right axis
+            updatePriceLabels(minPrice, maxPrice, lastClose);
+            
+            svg.innerHTML = candlesHTML;
+        }
+        
+        // Show line chart with realistic data
+        function showLineChart() {
+            const svg = document.getElementById('main-chart-svg');
+            if (!svg) return;
+            
+            // Base price
+            let basePrice = currentSymbol === 'BTC' ? 65000 : 
+                            currentSymbol === 'ETH' ? 2050 : 
+                            currentSymbol === 'SOL' ? 79.5 : 100;
+            
+            // Generate realistic price points
+            let points = [];
+            let price = basePrice;
+            const pointCount = 25;
+            const volatility = 0.003;
+            
+            for (let i = 0; i < pointCount; i++) {
+                const change = (Math.random() - 0.48) * price * volatility;
+                price += change;
+                points.push(price);
+            }
+            
+            const minPrice = Math.min(...points);
+            const maxPrice = Math.max(...points);
+            const priceRange = maxPrice - minPrice;
+            
+            // SVG settings
+            const svgWidth = 1000;
+            const svgHeight = 400;
+            const chartHeight = 300;
+            const topPadding = 50;
+            const gap = svgWidth / (pointCount - 1);
+            
+            // Generate path
+            let pathData = '';
+            points.forEach((p, i) => {
+                const x = i * gap;
+                const y = topPadding + ((maxPrice - p) / priceRange) * chartHeight;
+                pathData += i === 0 ? `M ${x + 50} ${y}` : ` L ${x + 50} ${y}`;
+            });
+            
+            // Area fill
+            const areaPath = pathData + ` L ${(pointCount - 1) * gap + 50} ${topPadding + chartHeight} L 50 ${topPadding + chartHeight} Z`;
+            
+            let svgContent = `
+                <defs>
+                    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#3fff8b;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#3fff8b;stop-opacity:0" />
+                    </linearGradient>
+                </defs>
+                <!-- Grid Lines -->
+                <line class="chart-grid" x1="0" x2="1000" y1="50" y2="50"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="125" y2="125"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="200" y2="200"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="275" y2="275"/>
+                <line class="chart-grid" x1="0" x2="1000" y1="350" y2="350"/>
+                <!-- Area fill -->
+                <path d="${areaPath}" fill="url(#lineGradient)"/>
+                <!-- Line -->
+                <path d="${pathData}" fill="none" stroke="#3fff8b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Current price line -->
+                <line stroke="#3fff8b" stroke-dasharray="4" stroke-width="1.5" x1="0" x2="1000" y1="${topPadding + ((maxPrice - points[points.length-1]) / priceRange) * chartHeight}" y2="${topPadding + ((maxPrice - points[points.length-1]) / priceRange) * chartHeight}"/>
+            `;
+            
+            // Update price labels
+            updatePriceLabels(minPrice, maxPrice, points[points.length-1]);
+            
+            svg.innerHTML = svgContent;
+        }
+        
+        // Update price labels
+        function updatePriceLabels(minPrice, maxPrice, currentPrice) {
+            const priceLabels = document.querySelectorAll('.price-label');
+            if (priceLabels.length >= 5) {
+                const range = maxPrice - minPrice;
+                priceLabels[0].textContent = formatPrice(maxPrice);
+                priceLabels[1].textContent = formatPrice(minPrice + range * 0.75);
+                priceLabels[2].textContent = formatPrice(currentPrice);
+                priceLabels[3].textContent = formatPrice(minPrice + range * 0.25);
+                priceLabels[4].textContent = formatPrice(minPrice);
+            }
+        }
+        
+        // Format price with commas
+        function formatPrice(price) {
+            return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        
+        // Update order book
+        function updateOrderBook() {
+            const basePrice = currentSymbol === 'BTC' ? 64231 : 
+                             currentSymbol === 'ETH' ? 3450 : 
+                             currentSymbol === 'SOL' ? 148 : 100;
+            
+            // Generate asks (sell orders)
+            const asksContainer = document.getElementById('asks-container');
+            if (asksContainer) {
+                let asksHTML = '';
+                for (let i = 0; i < 8; i++) {
+                    const price = basePrice + (i + 1) * (basePrice * 0.0005);
+                    const size = (Math.random() * 0.5 + 0.1).toFixed(4);
+                    const width = Math.random() * 80 + 10;
+                    asksHTML += `
+                        <div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+                            <div class="absolute inset-y-0 right-0 bg-error/10 w-[${width}%]"></div>
+                            <span class="text-error font-medium relative">${price.toFixed(2)}</span>
+                            <span class="text-right text-on-surface relative">${size}</span>
+                            <span class="text-right text-outline relative">${(price * size).toFixed(1)}</span>
+                        </div>
+                    `;
+                }
+                asksContainer.innerHTML = asksHTML;
+            }
+            
+            // Generate bids (buy orders)
+            const bidsContainer = document.getElementById('bids-container');
+            if (bidsContainer) {
+                let bidsHTML = '';
+                for (let i = 0; i < 8; i++) {
+                    const price = basePrice - (i + 1) * (basePrice * 0.0005);
+                    const size = (Math.random() * 0.5 + 0.1).toFixed(4);
+                    const width = Math.random() * 80 + 10;
+                    bidsHTML += `
+                        <div class="relative grid grid-cols-3 px-4 py-0.5 text-xs">
+                            <div class="absolute inset-y-0 right-0 bg-primary/10 w-[${width}%]"></div>
+                            <span class="text-primary font-medium relative">${price.toFixed(2)}</span>
+                            <span class="text-right text-on-surface relative">${size}</span>
+                            <span class="text-right text-outline relative">${(price * size).toFixed(1)}</span>
+                        </div>
+                    `;
+                }
+                bidsContainer.innerHTML = bidsHTML;
+            }
+        }
+        
+        // Symbol selector
+        function showSymbolSelector() {
+            const symbols = ['BTC', 'ETH', 'SOL', 'BNB', 'XRP', 'ADA', 'AVAX', 'DOT', 'LINK', 'MATIC', 'UNI', 'ATOM', 'LTC'];
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/70 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-surface-container p-6 rounded-xl border border-outline-variant/20 max-w-md w-full">
+                    <h3 class="text-lg font-bold text-on-surface mb-4">Select Symbol</h3>
+                    <div class="grid grid-cols-3 gap-2 max-h-80 overflow-y-auto">
+                        ${symbols.map(s => `
+                            <button onclick="selectSymbol('${s}')" class="p-3 bg-surface-container-high hover:bg-primary/20 rounded-lg transition-colors text-on-surface font-bold">
+                                ${s}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <button onclick="closeSymbolModal()" class="mt-4 w-full py-2 border border-outline-variant/30 text-on-surface rounded-lg">Cancel</button>
+                </div>
+            `;
+            modal.id = 'symbol-modal';
+            document.body.appendChild(modal);
+        }
+        
+        function selectSymbol(symbol) {
+            changeSymbol(symbol);
+            closeSymbolModal();
+        }
+        
+        function closeSymbolModal() {
+            const modal = document.getElementById('symbol-modal');
+            if (modal) modal.remove();
+        }
+        
+        function changeSymbol(symbol) {
+            currentSymbol = symbol;
+            
+            // Update UI
+            document.getElementById('current-symbol').textContent = symbol;
+            document.getElementById('current-pair').textContent = 'USDT';
+            
+            // Regenerate chart and order book
+            generateCandles();
+            updateOrderBook();
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers to timeframe buttons
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => setTimeframe(e.target.dataset.tf));
+            });
+            
+            // Add click handlers to chart type buttons
+            document.querySelectorAll('.chart-type-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => setChartType(e.currentTarget.dataset.type));
+            });
+            
+            // Generate initial chart
+            generateCandles();
+            updateOrderBook();
+            
+            // Auto-refresh every 5 seconds
+            setInterval(() => {
+                if (currentChartType === 'candlestick') {
+                    generateCandles();
+                }
+                updateOrderBook();
+            }, 5000);
+            
+            // Theme initialization
+            const savedTheme = localStorage.getItem('qaboot-theme') || 'dark';
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'light') {
+                htmlElement.classList.remove('dark');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        });
+        
+        function switchToTrading() {
+            window.location.href = '/trading';
+        }
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const isDark = htmlElement.classList.contains('dark');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('qaboot-theme', 'light');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('qaboot-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#490006",
+                    "on-secondary-container": "#e9fbff",
+                    "on-surface-variant": "#aaaab7",
+                    "tertiary-dim": "#ff716c",
+                    "primary-fixed": "#3fff8b",
+                    "inverse-surface": "#faf8ff",
+                    "error-container": "#9f0519",
+                    "on-error-container": "#ffa8a3",
+                    "secondary-fixed": "#54e3fc",
+                    "on-tertiary-container": "#110000",
+                    "surface-container": "#171924",
+                    "primary": "#3fff8b",
+                    "on-secondary-fixed-variant": "#005965",
+                    "outline": "#737580",
+                    "inverse-on-surface": "#53545f",
+                    "primary-container": "#13ea79",
+                    "surface-container-lowest": "#000000",
+                    "on-background": "#f0f0fd",
+                    "surface-container-high": "#1c1f2b",
+                    "primary-fixed-dim": "#24f07e",
+                    "surface-container-highest": "#222532",
+                    "on-secondary": "#004d58",
+                    "tertiary-fixed": "#ff928c",
+                    "on-tertiary-fixed-variant": "#790010",
+                    "background": "#0c0e17",
+                    "surface-dim": "#0c0e17",
+                    "surface-variant": "#222532",
+                    "outline-variant": "#464752",
+                    "surface": "#0c0e17",
+                    "on-tertiary-fixed": "#3a0004",
+                    "tertiary-container": "#f94d4e",
+                    "secondary-dim": "#3cd2eb",
+                    "surface-bright": "#282b3a",
+                    "on-primary-fixed-variant": "#006832",
+                    "secondary": "#50e1f9",
+                    "on-primary": "#005d2c",
+                    "inverse-primary": "#006e35",
+                    "tertiary-fixed-dim": "#ff7b75",
+                    "error": "#ff716c",
+                    "primary-dim": "#24f07e",
+                    "surface-tint": "#3fff8b",
+                    "surface-container-low": "#11131d",
+                    "on-secondary-fixed": "#003a43",
+                    "tertiary": "#ff716c",
+                    "on-surface": "#f0f0fd",
+                    "on-primary-fixed": "#004820",
+                    "secondary-fixed-dim": "#40d5ee",
+                    "secondary-container": "#006876",
+                    "on-primary-container": "#004f24",
+                    "error-dim": "#d7383b",
+                    "on-tertiary": "#490006"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(28, 31, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(115, 117, 128, 0.1);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #3fff8b 0%, #13ea79 100%);
+        }
+        .light-leak {
+            box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #222532; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary selection:text-on-primary">
+<!-- SideNavBar (Authority: JSON & Design System) -->
+<aside class="w-[280px] h-screen fixed left-0 top-0 border-r border-white/10 bg-slate-900/70 dark:bg-[#11131d] flex flex-col h-full py-6 z-50">
+<div class="px-8 mb-10">
+<span class="text-xl font-black text-[#f0f0fd] tracking-tighter">QABOOT V4</span>
+<span class="block text-[10px] text-primary tracking-[0.2em] font-bold uppercase mt-1">V4 PRO</span>
+</div>
+<nav class="flex-1">
+<div class="space-y-1">
+<a class="flex items-center gap-3 py-3 px-8 text-slate-400 hover:text-[#f0f0fd] transition-colors hover:bg-white/5 group" href="/">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-['Inter'] text-sm tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-8 text-slate-400 hover:text-[#f0f0fd] transition-colors hover:bg-white/5 group" href="/portfolio">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+<span class="font-['Inter'] text-sm tracking-wide">Portfolio</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-8 text-slate-400 hover:text-[#f0f0fd] transition-colors hover:bg-white/5 group" href="/trading">
+<span class="material-symbols-outlined text-[20px]">swap_horiz</span>
+<span class="font-['Inter'] text-sm tracking-wide">Trading</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-8 text-slate-400 hover:text-[#f0f0fd] transition-colors hover:bg-white/5 group" href="/charts">
+<span class="material-symbols-outlined text-[20px]">show_chart</span>
+<span class="font-['Inter'] text-sm tracking-wide">Charts</span>
+</a>
+<!-- ACTIVE TAB -->
+<a class="flex items-center gap-3 py-3 px-8 text-[#00E676] border-l-4 border-[#00E676] bg-[#1c1f2b] transition-all duration-300" href="/strategies">
+<span class="material-symbols-outlined text-[20px]">precision_manufacturing</span>
+<span class="font-['Inter'] text-sm tracking-wide font-semibold">Strategies</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-8 text-slate-400 hover:text-[#f0f0fd] transition-colors hover:bg-white/5 group" href="/signals">
+<span class="material-symbols-outlined text-[20px]">sensors</span>
+<span class="font-['Inter'] text-sm tracking-wide">Signals</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-8 text-slate-400 hover:text-[#f0f0fd] transition-colors hover:bg-white/5 group" href="/settings">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-['Inter'] text-sm tracking-wide">Settings</span>
+</a>
+</div>
+</nav>
+<div class="px-8 mt-auto space-y-1 pt-6 border-t border-white/5">
+<a class="flex items-center gap-3 py-2 text-slate-400 hover:text-on-surface text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 py-2 text-slate-400 hover:text-error text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Authority: JSON & Design System) -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-[#0c0e17]/80 backdrop-blur-xl flex items-center justify-between px-8 z-40 shadow-2xl shadow-black/50">
+<div class="flex items-center gap-8">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 material-symbols-outlined text-[18px]">search</span>
+<input class="bg-surface-container-lowest border-none rounded-full py-1.5 pl-10 pr-4 text-xs w-64 focus:ring-1 focus:ring-secondary/50 placeholder:text-slate-600" placeholder="Search markets, assets..." type="text"/>
+</div>
+<nav class="hidden md:flex gap-6">
+<a class="font-['Inter'] text-xs font-medium uppercase tracking-widest text-slate-300 hover:text-[#00E676] transition-colors" href="#">Markets</a>
+<a class="font-['Inter'] text-xs font-medium uppercase tracking-widest text-slate-300 hover:text-[#00E676] transition-colors" href="#">Learn</a>
+<a class="font-['Inter'] text-xs font-medium uppercase tracking-widest text-slate-300 hover:text-[#00E676] transition-colors" href="#">Tools</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<!-- Theme Toggle -->
+<button onclick="toggleTheme()" id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-on-surface hover:bg-white/10 transition-all" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+</button>
+<button class="bg-primary text-on-primary px-5 py-1.5 rounded-full font-['Inter'] text-xs font-bold uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all">
+                Deposit
+            </button>
+<div class="flex items-center gap-4 text-slate-400">
+<span class="material-symbols-outlined cursor-pointer hover:text-on-surface transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-on-surface transition-colors">history</span>
+<div class="flex items-center gap-3 ml-2 pl-4 border-l border-white/10">
+<div class="text-right">
+<p class="text-xs font-bold text-on-surface leading-none">Alex Rivera</p>
+<p class="text-[10px] text-primary mt-1">PRO Tier</p>
+</div>
+<img alt="Alex Rivera" class="w-8 h-8 rounded-full border border-primary/20" data-alt="portrait of a professional hispanic male trader in high-tech office setting soft cyan backlighting highly detailed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ62xbjduzjM3p1ueYqxQN4wgY3tdAjQahABnvtYVnIK3q4lcjIKzHFKsGBQjJ3EjtT9OR-vq3oauHKntzP3-SbrZpd0XJp5r-jMW_y99FObGDG3alHEnlEFfVUrgJBmK-iLnjt6J67xGomP2JizCI7cIl3ww9kpVwmi5AWjy79hPk7rkvHJWSxK0eMdA1cepPhVvJz65hWILuQKUq7LLYWrP3gYi3ZTyzljg7PfLOrQCtYMASdG0O_K7dXzExyetBMOFD52gbNdE"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] pt-16 p-8 min-h-screen">
+<!-- Strategy Navigation -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex gap-10">
+<button class="text-on-surface font-semibold text-lg pb-2 border-b-2 border-primary transition-all">Technical Analysis</button>
+<button class="text-on-surface-variant font-medium text-lg pb-2 hover:text-on-surface transition-all">Price Predictions</button>
+<button class="text-on-surface-variant font-medium text-lg pb-2 hover:text-on-surface transition-all">Signal History</button>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-xl border border-white/5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] uppercase tracking-tighter text-on-surface-variant font-bold">Live Data Feed</span>
+</div>
+</div>
+<!-- Control Panel -->
+<div class="glass-panel p-6 rounded-xl mb-8 flex flex-wrap items-center gap-6">
+    <div class="flex-1 min-w-[200px]">
+        <label class="block text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Target Asset</label>
+        <div class="relative group">
+            <select id="strategy-asset-select" onchange="updateStrategyAnalysis()" class="w-full bg-surface-container-lowest border-none text-on-surface py-3 px-4 rounded-xl appearance-none cursor-pointer focus:ring-1 focus:ring-secondary/50">
+                <option value="BTC" data-name="Bitcoin" data-price="67258">BTC/USDT - Bitcoin</option>
+                <option value="ETH" data-name="Ethereum" data-price="2064">ETH/USDT - Ethereum</option>
+                <option value="SOL" data-name="Solana" data-price="79.88">SOL/USDT - Solana</option>
+                <option value="XRP" data-name="XRP" data-price="1.30">XRP/USDT - XRP</option>
+                <option value="TAO" data-name="Bittensor" data-price="300.20">TAO/USDT - Bittensor</option>
+                <option value="ADA" data-name="Cardano" data-price="0.2450">ADA/USDT - Cardano</option>
+                <option value="VIRTUAL" data-name="Virtuals" data-price="0.6167">VIRTUAL/USDT - Virtuals</option>
+                <option value="NEAR" data-name="NEAR Protocol" data-price="1.23">NEAR/USDT - NEAR</option>
+                <option value="AVAX" data-name="Avalanche" data-price="8.87">AVAX/USDT - Avalanche</option>
+                <option value="FET" data-name="Fetch.ai" data-price="0.2286">FET/USDT - Fetch.ai</option>
+                <option value="KAS" data-name="Kaspa" data-price="0.0800">KAS/USDT - Kaspa</option>
+                <option value="SEI" data-name="Sei" data-price="0.0527">SEI/USDT - Sei</option>
+                <option value="STX" data-name="Stacks" data-price="0.2106">STX/USDT - Stacks</option>
+                <option value="SUI" data-name="Sui" data-price="0.8485">SUI/USDT - Sui</option>
+                <option value="ONDO" data-name="Ondo" data-price="0.2517">ONDO/USDT - Ondo</option>
+                <option value="W" data-name="Wormhole" data-price="0.0130">W/USDT - Wormhole</option>
+                <option value="POL" data-name="POL" data-price="0.0898">POL/USDT - POL</option>
+                <option value="LINK" data-name="Chainlink" data-price="14.50">LINK/USDT - Chainlink</option>
+                <option value="DOT" data-name="Polkadot" data-price="6.80">DOT/USDT - Polkadot</option>
+                <option value="UNI" data-name="Uniswap" data-price="8.40">UNI/USDT - Uniswap</option>
+                <option value="AAVE" data-name="Aave" data-price="98.50">AAVE/USDT - Aave</option>
+                <option value="LDO" data-name="Lido" data-price="1.85">LDO/USDT - Lido</option>
+                <option value="MATIC" data-name="Polygon" data-price="0.35">MATIC/USDT - Polygon</option>
+                <option value="ATOM" data-name="Cosmos" data-price="4.90">ATOM/USDT - Cosmos</option>
+                <option value="LTC" data-name="Litecoin" data-price="82.40">LTC/USDT - Litecoin</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">expand_more</span>
+        </div>
+    </div>
+    <div class="w-64">
+        <label class="block text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-2">Timeframe</label>
+        <div class="flex bg-surface-container-lowest p-1 rounded-xl">
+            <button onclick="setStrategyTimeframe('15m')" class="strategy-tf-btn flex-1 py-2 text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors" data-tf="15m">15m</button>
+            <button onclick="setStrategyTimeframe('1h')" class="strategy-tf-btn flex-1 py-2 text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors" data-tf="1h">1h</button>
+            <button onclick="setStrategyTimeframe('4h')" class="strategy-tf-btn flex-1 py-2 text-xs font-bold bg-surface-container-high text-secondary rounded-lg transition-colors" data-tf="4h">4h</button>
+            <button onclick="setStrategyTimeframe('1d')" class="strategy-tf-btn flex-1 py-2 text-xs font-bold text-on-surface-variant hover:text-on-surface transition-colors" data-tf="1d">1d</button>
+        </div>
+    </div>
+    <div class="flex items-end self-stretch pt-6">
+        <button onclick="runStrategyAnalysis()" id="run-analysis-btn" class="gradient-primary text-on-primary h-full px-10 rounded-xl font-bold flex items-center gap-3 active:scale-95 transition-all shadow-lg shadow-primary/20 hover:brightness-110">
+            <span class="material-symbols-outlined">analytics</span>
+            <span id="analysis-btn-text">RUN ANALYSIS</span>
+        </button>
+    </div>
+</div>
+<!-- Signal Analysis Dashboard -->
+<div class="grid grid-cols-12 gap-6 mb-8">
+<!-- Primary Signal Card -->
+<div class="col-span-12 lg:col-span-5 glass-panel p-8 rounded-xl relative overflow-hidden group">
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all duration-500"></div>
+<div class="flex justify-between items-start mb-10">
+<div>
+<h3 class="text-on-surface-variant text-xs font-bold tracking-widest uppercase mb-1">Signal Direction</h3>
+<p class="text-4xl font-black text-primary flex items-center gap-3">
+                            STRONG BUY
+                            <span class="material-symbols-outlined text-4xl">trending_up</span>
+</p>
+</div>
+<div class="text-right">
+<span class="text-3xl font-black text-on-surface">88%</span>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Confidence Index</p>
+</div>
+</div>
+<!-- Confidence Meter -->
+<div class="relative h-4 bg-surface-container-lowest rounded-full overflow-hidden mb-8">
+<div class="absolute top-0 left-0 h-full w-[88%] gradient-primary rounded-full"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Volatility Score</p>
+<p class="text-xl font-bold text-on-surface">Medium</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Trend Strength</p>
+<p class="text-xl font-bold text-secondary">High</p>
+</div>
+</div>
+</div>
+<!-- Trade Parameters -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+<div class="flex-1 glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-secondary/40">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Target Entry</p>
+<p class="text-2xl font-black text-on-surface">$64,231.50</p>
+</div>
+<span class="material-symbols-outlined text-secondary opacity-50">login</span>
+</div>
+<div class="flex-1 glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-error/40">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Stop Loss</p>
+<p class="text-2xl font-black text-error">$62,100.00</p>
+</div>
+<span class="material-symbols-outlined text-error opacity-50">gpp_maybe</span>
+</div>
+<div class="flex-1 glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-primary/40">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Take Profit</p>
+<p class="text-2xl font-black text-primary">$68,500.00</p>
+</div>
+<span class="material-symbols-outlined text-primary opacity-50">verified</span>
+</div>
+</div>
+<!-- Market Sentiment Gauge -->
+<div class="col-span-12 lg:col-span-3 glass-panel p-8 rounded-xl flex flex-col items-center justify-center text-center">
+<h3 class="text-on-surface-variant text-xs font-bold tracking-widest uppercase mb-6">Market Sentiment</h3>
+<div class="relative w-40 h-20 overflow-hidden">
+<div class="absolute top-0 left-0 w-40 h-40 border-[16px] border-surface-container-lowest rounded-full"></div>
+<!-- Bullish side -->
+<div class="absolute top-0 left-0 w-40 h-40 border-[16px] border-primary/30 rounded-full clip-half" style="clip-path: inset(0 50% 50% 0);"></div>
+<div class="absolute top-0 left-0 w-40 h-40 border-[16px] border-primary rounded-full transition-all" style="clip-path: inset(0 0 50% 80%);"></div>
+<div class="absolute bottom-0 w-full text-center">
+<span class="text-2xl font-black text-primary">BULLISH</span>
+</div>
+</div>
+<div class="flex justify-between w-full mt-6 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+<span class="text-error">Bearish</span>
+<span class="text-primary">Bullish</span>
+</div>
+</div>
+<!-- Technical Indicators Grid -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="glass-panel p-5 rounded-xl">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">RSI (14)</span>
+<span class="text-xs font-bold text-primary">Neutral</span>
+</div>
+<p class="text-2xl font-bold">65.4</p>
+</div>
+<div class="glass-panel p-5 rounded-xl">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">MACD</span>
+<span class="text-xs font-bold text-primary">Bullish</span>
+</div>
+<p class="text-sm font-semibold text-secondary">Golden Crossover</p>
+</div>
+<div class="glass-panel p-5 rounded-xl">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">EMA Stack</span>
+<span class="text-xs font-bold text-primary">Bullish</span>
+</div>
+<p class="text-sm font-semibold">20 &gt; 50 &gt; 200</p>
+</div>
+<div class="glass-panel p-5 rounded-xl">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Bollinger Bands</span>
+<span class="text-xs font-bold text-secondary">Expansion</span>
+</div>
+<p class="text-sm font-semibold">Price Above Mid</p>
+</div>
+</div>
+</div>
+<!-- Signal History Table -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="px-8 py-5 border-b border-white/5 flex justify-between items-center">
+<h3 class="font-bold text-on-surface">Recent Signal Execution</h3>
+<button class="text-secondary text-xs font-bold uppercase tracking-widest hover:underline">Export CSV</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container/50">
+<th class="px-8 py-4 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">Timestamp</th>
+<th class="px-8 py-4 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">Market</th>
+<th class="px-8 py-4 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">Signal Type</th>
+<th class="px-8 py-4 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">Status</th>
+<th class="px-8 py-4 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">Net P/L</th>
+<th class="px-8 py-4 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-8 py-4 text-xs font-medium text-slate-400">Oct 24, 14:22</td>
+<td class="px-8 py-4 text-sm font-bold">ETH/USDT</td>
+<td class="px-8 py-4">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase">Long Signal</span>
+</td>
+<td class="px-8 py-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> SUCCESS
+                                </span>
+</td>
+<td class="px-8 py-4 text-sm font-black text-primary">+12.4%</td>
+<td class="px-8 py-4">
+<button class="material-symbols-outlined text-slate-500 hover:text-on-surface transition-colors">analytics</button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-8 py-4 text-xs font-medium text-slate-400">Oct 24, 09:15</td>
+<td class="px-8 py-4 text-sm font-bold">SOL/USDT</td>
+<td class="px-8 py-4">
+<span class="bg-error/10 text-error px-3 py-1 rounded-full text-[10px] font-black uppercase">Short Signal</span>
+</td>
+<td class="px-8 py-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-error">
+<span class="material-symbols-outlined text-[14px]">cancel</span> FAILED
+                                </span>
+</td>
+<td class="px-8 py-4 text-sm font-black text-error">-2.1%</td>
+<td class="px-8 py-4">
+<button class="material-symbols-outlined text-slate-500 hover:text-on-surface transition-colors">analytics</button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-8 py-4 text-xs font-medium text-slate-400">Oct 23, 22:40</td>
+<td class="px-8 py-4 text-sm font-bold">BTC/USDT</td>
+<td class="px-8 py-4">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase">Long Signal</span>
+</td>
+<td class="px-8 py-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-primary">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> SUCCESS
+                                </span>
+</td>
+<td class="px-8 py-4 text-sm font-black text-primary">+4.8%</td>
+<td class="px-8 py-4">
+<button class="material-symbols-outlined text-slate-500 hover:text-on-surface transition-colors">analytics</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Floating Action Button - Supressed for Details Page -->
+
+    <!-- Stitch API Integration -->
+    <script src="{{ url_for('static', filename='js/stitch_api.js') }}?v=1"></script>
+    <!-- Real Data API -->
+    <script src="{{ url_for('static', filename='js/strategies_real.js') }}?v=1"></script>
+    <!-- Strategies Populate Script -->
+    <script src="{{ url_for('static', filename='js/strategies_populate.js') }}?v=1"></script>
+    
+    <!-- Interactive Strategies Script -->
+    <script>
+        let currentStrategyAsset = 'BTC';
+        let currentStrategyTimeframe = '4h';
+        let isAnalyzing = false;
+        
+        // Asset configurations with realistic parameters
+        const assetConfigs = {
+            'BTC': { sentiment: 'BULLISH', confidence: 88, rsi: 65.4, macd: 'Golden Cross', ema: '20 > 50 > 200', bollinger: 'Expansion', entry: 67258, stopLoss: 65000, takeProfit: 72000 },
+            'ETH': { sentiment: 'BULLISH', confidence: 76, rsi: 58.2, macd: 'Bullish Divergence', ema: '20 > 50', bollinger: 'Expansion', entry: 2064, stopLoss: 1950, takeProfit: 2400 },
+            'SOL': { sentiment: 'BEARISH', confidence: 62, rsi: 42.1, macd: 'Bearish Cross', ema: '20 < 50', bollinger: 'Contraction', entry: 79.88, stopLoss: 85.00, takeProfit: 65.00 },
+            'XRP': { sentiment: 'BULLISH', confidence: 71, rsi: 56.8, macd: 'Bullish', ema: '20 > 50', bollinger: 'Squeeze', entry: 1.30, stopLoss: 1.15, takeProfit: 1.60 },
+            'TAO': { sentiment: 'BULLISH', confidence: 82, rsi: 68.5, macd: 'Golden Cross', ema: '20 > 50 > 200', bollinger: 'Expansion', entry: 300.20, stopLoss: 280.00, takeProfit: 350.00 },
+            'ADA': { sentiment: 'BEARISH', confidence: 58, rsi: 38.5, macd: 'Bearish Divergence', ema: '20 < 50', bollinger: 'Contraction', entry: 0.245, stopLoss: 0.265, takeProfit: 0.200 },
+            'VIRTUAL': { sentiment: 'BULLISH', confidence: 74, rsi: 62.3, macd: 'Bullish Cross', ema: '20 > 50', bollinger: 'Expansion', entry: 0.6167, stopLoss: 0.550, takeProfit: 0.800 },
+            'NEAR': { sentiment: 'NEUTRAL', confidence: 52, rsi: 48.5, macd: 'Neutral', ema: '20 ≈ 50', bollinger: 'Squeeze', entry: 1.23, stopLoss: 1.10, takeProfit: 1.50 },
+            'AVAX': { sentiment: 'BULLISH', confidence: 69, rsi: 54.2, macd: 'Bullish', ema: '20 > 50', bollinger: 'Normal', entry: 8.87, stopLoss: 8.20, takeProfit: 11.00 },
+            'FET': { sentiment: 'BEARISH', confidence: 64, rsi: 41.2, macd: 'Bearish Cross', ema: '20 < 50', bollinger: 'Contraction', entry: 0.2286, stopLoss: 0.25, takeProfit: 0.18 },
+            'KAS': { sentiment: 'BULLISH', confidence: 78, rsi: 64.1, macd: 'Golden Cross', ema: '20 > 50', bollinger: 'Expansion', entry: 0.080, stopLoss: 0.070, takeProfit: 0.12 },
+            'SEI': { sentiment: 'NEUTRAL', confidence: 48, rsi: 49.8, macd: 'Sideways', ema: '20 ≈ 50', bollinger: 'Contraction', entry: 0.0527, stopLoss: 0.045, takeProfit: 0.07 },
+            'STX': { sentiment: 'BULLISH', confidence: 72, rsi: 57.3, macd: 'Bullish', ema: '20 > 50', bollinger: 'Expansion', entry: 0.2106, stopLoss: 0.18, takeProfit: 0.30 },
+            'SUI': { sentiment: 'BULLISH', confidence: 66, rsi: 55.1, macd: 'Bullish Cross', ema: '20 > 50', bollinger: 'Normal', entry: 0.8485, stopLoss: 0.75, takeProfit: 1.20 },
+            'ONDO': { sentiment: 'NEUTRAL', confidence: 54, rsi: 47.2, macd: 'Neutral', ema: '20 ≈ 50', bollinger: 'Squeeze', entry: 0.2517, stopLoss: 0.22, takeProfit: 0.35 },
+            'W': { sentiment: 'BEARISH', confidence: 61, rsi: 39.8, macd: 'Bearish', ema: '20 < 50', bollinger: 'Contraction', entry: 0.0130, stopLoss: 0.015, takeProfit: 0.009 },
+            'POL': { sentiment: 'BULLISH', confidence: 70, rsi: 53.8, macd: 'Bullish', ema: '20 > 50', bollinger: 'Normal', entry: 0.0898, stopLoss: 0.08, takeProfit: 0.12 },
+            'LINK': { sentiment: 'BULLISH', confidence: 75, rsi: 59.4, macd: 'Golden Cross', ema: '20 > 50', bollinger: 'Expansion', entry: 14.50, stopLoss: 13.00, takeProfit: 18.00 },
+            'DOT': { sentiment: 'NEUTRAL', confidence: 56, rsi: 46.5, macd: 'Sideways', ema: '20 ≈ 50', bollinger: 'Contraction', entry: 6.80, stopLoss: 6.00, takeProfit: 8.50 },
+            'UNI': { sentiment: 'BULLISH', confidence: 68, rsi: 52.3, macd: 'Bullish', ema: '20 > 50', bollinger: 'Normal', entry: 8.40, stopLoss: 7.50, takeProfit: 11.00 },
+            'AAVE': { sentiment: 'BULLISH', confidence: 73, rsi: 60.1, macd: 'Golden Cross', ema: '20 > 50', bollinger: 'Expansion', entry: 98.50, stopLoss: 88.00, takeProfit: 130.00 },
+            'LDO': { sentiment: 'NEUTRAL', confidence: 51, rsi: 48.2, macd: 'Neutral', ema: '20 ≈ 50', bollinger: 'Squeeze', entry: 1.85, stopLoss: 1.60, takeProfit: 2.50 },
+            'MATIC': { sentiment: 'BEARISH', confidence: 63, rsi: 40.5, macd: 'Bearish Divergence', ema: '20 < 50', bollinger: 'Contraction', entry: 0.35, stopLoss: 0.40, takeProfit: 0.25 },
+            'ATOM': { sentiment: 'NEUTRAL', confidence: 57, rsi: 49.1, macd: 'Sideways', ema: '20 ≈ 50', bollinger: 'Normal', entry: 4.90, stopLoss: 4.40, takeProfit: 6.50 },
+            'LTC': { sentiment: 'BULLISH', confidence: 69, rsi: 54.8, macd: 'Bullish Cross', ema: '20 > 50', bollinger: 'Expansion', entry: 82.40, stopLoss: 75.00, takeProfit: 100.00 }
+        };
+        
+        // Set timeframe and update UI
+        function setStrategyTimeframe(tf) {
+            currentStrategyTimeframe = tf;
+            
+            // Update button states
+            document.querySelectorAll('.strategy-tf-btn').forEach(btn => {
+                btn.classList.remove('bg-surface-container-high', 'text-secondary', 'rounded-lg');
+                btn.classList.add('text-on-surface-variant');
+            });
+            const activeBtn = document.querySelector(`button[data-tf="${tf}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-surface-container-high', 'text-secondary', 'rounded-lg');
+                activeBtn.classList.remove('text-on-surface-variant');
+            }
+            
+            // Update analysis with slight variations based on timeframe
+            updateStrategyAnalysis();
+        }
+        
+        // Update strategy analysis based on selected asset
+        function updateStrategyAnalysis() {
+            const select = document.getElementById('strategy-asset-select');
+            const symbol = select.value;
+            const selectedOption = select.options[select.selectedIndex];
+            const assetName = selectedOption.dataset.name;
+            const basePrice = parseFloat(selectedOption.dataset.price);
+            
+            currentStrategyAsset = symbol;
+            
+            const config = assetConfigs[symbol] || assetConfigs['BTC'];
+            
+            // Apply timeframe modifiers
+            let confidenceMod = 0;
+            let volatilityText = 'Medium';
+            if (currentStrategyTimeframe === '15m') { confidenceMod = -5; volatilityText = 'High'; }
+            else if (currentStrategyTimeframe === '1h') { confidenceMod = -2; volatilityText = 'Medium'; }
+            else if (currentStrategyTimeframe === '4h') { confidenceMod = 0; volatilityText = 'Medium'; }
+            else if (currentStrategyTimeframe === '1d') { confidenceMod = 3; volatilityText = 'Low'; }
+            
+            const finalConfidence = Math.max(40, Math.min(95, config.confidence + confidenceMod));
+            
+            // Update Signal Direction
+            const signalTitle = document.querySelector('.text-4xl');
+            if (signalTitle) {
+                const isBullish = config.sentiment === 'BULLISH';
+                const isBearish = config.sentiment === 'BEARISH';
+                const direction = isBullish ? 'STRONG BUY' : isBearish ? 'STRONG SELL' : 'NEUTRAL';
+                const colorClass = isBullish ? 'text-primary' : isBearish ? 'text-error' : 'text-secondary';
+                const icon = isBullish ? 'trending_up' : isBearish ? 'trending_down' : 'trending_flat';
+                
+                signalTitle.className = `text-4xl font-black ${colorClass} flex items-center gap-3`;
+                signalTitle.innerHTML = `${direction} <span class="material-symbols-outlined text-4xl">${icon}</span>`;
+            }
+            
+            // Update Confidence Index
+            const confidenceDisplay = document.querySelector('.col-span-12.lg\\:col-span-5 .text-3xl');
+            if (confidenceDisplay) {
+                confidenceDisplay.textContent = `${finalConfidence}%`;
+            }
+            
+            // Update confidence bar
+            const confidenceBar = document.querySelector('.col-span-12.lg\\:col-span-5 .absolute.top-0');
+            if (confidenceBar) {
+                confidenceBar.style.width = `${finalConfidence}%`;
+                confidenceBar.className = `absolute top-0 left-0 h-full rounded-full ${config.sentiment === 'BULLISH' ? 'bg-primary' : config.sentiment === 'BEARISH' ? 'bg-error' : 'bg-secondary'}`;
+            }
+            
+            // Update Trade Parameters
+            const entryPrice = document.querySelector('.border-secondary\\/40 p.text-2xl');
+            const stopLossPrice = document.querySelector('.border-error\\/40 p.text-2xl');
+            const takeProfitPrice = document.querySelector('.border-primary\\/40 p.text-2xl');
+            
+            if (entryPrice) entryPrice.textContent = `$${config.entry.toLocaleString()}`;
+            if (stopLossPrice) stopLossPrice.textContent = `$${config.stopLoss.toLocaleString()}`;
+            if (takeProfitPrice) takeProfitPrice.textContent = `$${config.takeProfit.toLocaleString()}`;
+            
+            // Update Volatility and Trend
+            const volatilityScore = document.querySelector('.bg-surface-container-low p.text-xl:first-of-type');
+            const trendStrength = document.querySelector('.bg-surface-container-low p.text-xl:last-of-type');
+            
+            if (volatilityScore) volatilityScore.textContent = volatilityText;
+            if (trendStrength) {
+                const trendText = config.sentiment === 'BULLISH' ? 'High' : config.sentiment === 'BEARISH' ? 'High' : 'Neutral';
+                const trendColor = config.sentiment === 'BULLISH' ? 'text-secondary' : config.sentiment === 'BEARISH' ? 'text-error' : 'text-outline';
+                trendStrength.textContent = trendText;
+                trendStrength.className = `text-xl font-bold ${trendColor}`;
+            }
+            
+            // Update Market Sentiment
+            const sentimentBar = document.querySelector('.col-span-12.lg\\:col-span-3 .text-4xl');
+            if (sentimentBar) {
+                sentimentBar.textContent = config.sentiment;
+                sentimentBar.className = `text-4xl font-black ${config.sentiment === 'BULLISH' ? 'text-primary' : config.sentiment === 'BEARISH' ? 'text-error' : 'text-secondary'}`;
+            }
+            
+            // Update sentiment bar fill
+            const bullishFill = document.querySelector('.flex.gap-1 .bg-primary\\/20');
+            const bearishFill = document.querySelector('.flex.gap-1 .bg-error\\/20');
+            if (bullishFill && bearishFill) {
+                const bullishWidth = config.sentiment === 'BULLISH' ? finalConfidence : config.sentiment === 'BEARISH' ? (100 - finalConfidence) : 50;
+                const bearishWidth = 100 - bullishWidth;
+                bullishFill.style.width = `${bullishWidth}%`;
+                bearishFill.style.width = `${bearishWidth}%`;
+            }
+            
+            // Update Technical Indicators
+            const rsiValue = document.querySelector('.col-span-12.lg\\:col-span-4:first-of-type .text-sm');
+            const macdValue = document.querySelector('.col-span-12.lg\\:col-span-4:nth-of-type(2) .text-sm');
+            const emaValue = document.querySelector('.col-span-12.lg\\:col-span-4:nth-of-type(3) .text-sm');
+            const bbValue = document.querySelector('.col-span-12.lg\\:col-span-4:last-of-type .text-sm');
+            
+            if (rsiValue) rsiValue.textContent = config.rsi;
+            if (macdValue) macdValue.textContent = config.macd;
+            if (emaValue) emaValue.textContent = config.ema;
+            if (bbValue) bbValue.textContent = config.bollinger;
+            
+            // Update indicator colors
+            document.querySelectorAll('.col-span-12.lg\\:col-span-4 .text-primary, .col-span-12.lg\\:col-span-4 .text-error, .col-span-12.lg\\:col-span-4 .text-secondary').forEach(el => {
+                const label = el.previousElementSibling?.textContent || '';
+                if (label.includes('RSI')) {
+                    el.className = `text-sm font-bold ${config.rsi > 70 ? 'text-error' : config.rsi < 30 ? 'text-primary' : 'text-secondary'}`;
+                } else if (label.includes('MACD')) {
+                    el.className = `text-sm font-bold ${config.macd.includes('Bullish') ? 'text-primary' : config.macd.includes('Bearish') ? 'text-error' : 'text-secondary'}`;
+                } else if (label.includes('EMA')) {
+                    el.className = `text-sm font-bold ${config.ema.includes('>') ? 'text-primary' : config.ema.includes('<') ? 'text-error' : 'text-secondary'}`;
+                } else if (label.includes('Bollinger')) {
+                    el.className = `text-sm font-bold ${config.bollinger === 'Expansion' ? 'text-primary' : config.bollinger === 'Contraction' ? 'text-error' : 'text-secondary'}`;
+                }
+            });
+        }
+        
+        // Run full analysis with animation
+        function runStrategyAnalysis() {
+            if (isAnalyzing) return;
+            
+            isAnalyzing = true;
+            const btn = document.getElementById('run-analysis-btn');
+            const btnText = document.getElementById('analysis-btn-text');
+            
+            if (btn && btnText) {
+                btnText.textContent = 'Analyzing...';
+                btn.style.opacity = '0.7';
+                btn.disabled = true;
+                
+                // Simulate analysis delay
+                setTimeout(() => {
+                    updateStrategyAnalysis();
+                    btnText.textContent = 'Analysis Complete';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                    
+                    // Flash effect on data cards
+                    document.querySelectorAll('.glass-panel').forEach(panel => {
+                        panel.style.transition = 'box-shadow 0.3s';
+                        panel.style.boxShadow = '0 0 20px rgba(63, 255, 139, 0.3)';
+                        setTimeout(() => {
+                            panel.style.boxShadow = '';
+                        }, 500);
+                    });
+                    
+                    setTimeout(() => {
+                        btnText.textContent = 'RUN ANALYSIS';
+                    }, 2000);
+                    
+                    isAnalyzing = false;
+                }, 1500);
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial analysis
+            updateStrategyAnalysis();
+            
+            // Theme initialization
+            const savedTheme = localStorage.getItem('qaboot-theme') || 'dark';
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'light') {
+                htmlElement.classList.remove('dark');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        });
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const isDark = htmlElement.classList.contains('dark');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('qaboot-theme', 'light');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('qaboot-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+    </script>
+</body></html>

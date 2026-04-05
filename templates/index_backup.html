@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>QABOOT V4 PRO - FAL Army Trading Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Stitch Design System Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=2000001">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2000001">
+    <script src="{{ url_for('static', filename='js/formatters.js') }}?v=2000001"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}?v=2000001" defer></script>
+    <script>
+        // Force reload on version change
+        if (localStorage.getItem('version') !== 'v2000001') {
+            localStorage.setItem('version', 'v2000001');
+            location.reload(true);
+        }
+    </script>
+</head>
+<body class="bg-[#0c0e17] text-[#f0f0fd] min-h-screen font-['Inter']">
+    <!-- Stitch Header - Fixed at top right -->
+    <header class="header-glass fixed top-0 right-0 z-50 px-8 h-16 flex items-center" style="left: 280px;">
+        <div class="flex justify-between items-center w-full">
+            <!-- Search Bar -->
+            <div class="flex items-center gap-8 flex-1">
+                <div class="relative w-full max-w-md">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#737580] text-lg">search</span>
+                    <input class="bg-[#11131d] border-none rounded-xl py-2 pl-10 pr-4 w-full text-[#f0f0fd] focus:ring-1 focus:ring-[#50e1f9] text-xs transition-all" placeholder="Search markets, assets, or tools..." type="text"/>
+                </div>
+                <nav class="hidden lg:flex items-center gap-6">
+                    <a class="text-[#737580] hover:text-[#50e1f9] transition-opacity text-sm" href="#">Markets</a>
+                    <a class="text-[#737580] hover:text-[#50e1f9] transition-opacity text-sm" href="#">Learn</a>
+                    <a class="text-[#737580] hover:text-[#50e1f9] transition-opacity text-sm" href="#">Tools</a>
+                </nav>
+            </div>
+
+            <!-- Right Section: Notifications + Profile -->
+            <div class="flex items-center gap-6">
+                <button onclick="openAlertsModal()" class="relative text-[#737580] hover:text-[#f0f0fd] transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span id="alerts-badge" class="absolute top-0 right-0 w-2 h-2 bg-[#3fff8b] rounded-full hidden"></span>
+                </button>
+                <span id="paper-badge" class="hidden px-2 py-1 bg-[#6b21a8]/20 text-[#a855f7] text-xs rounded border border-[#6b21a8]/30">
+                    📊 Paper
+                </span>
+                <span class="status-badge status-live">Live Market</span>
+                <!-- Profile -->
+                <div class="flex items-center gap-3 pl-6 border-l border-white/10">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-[#f0f0fd] text-xs font-bold leading-none">Faisal Al Farhan</p>
+                        <p class="text-[10px] text-[#737580] mt-1 uppercase tracking-tighter">Pro Tier</p>
+                    </div>
+                    <button onclick="openProfileModal()" class="w-9 h-9 rounded-full bg-gradient-to-br from-[#50e1f9] to-[#3b82f6] flex items-center justify-center hover:opacity-90 transition">
+                        <span class="text-[#004d58] font-bold text-sm">F</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Spacer for fixed header -->
+    <div class="h-16"></div>
+
+    <div class="flex">
+        <!-- Sidebar - Liquid Glass -->
+        <nav class="sidebar-glass fixed left-0 top-20 bottom-0 w-72 p-4 overflow-y-auto z-50" style="width: 280px;">
+            <div class="space-y-1">
+                <button onclick="showPage('dashboard')" class="nav-button active w-full" data-page="dashboard">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="showPage('portfolio')" class="nav-button w-full" data-page="portfolio">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <span>Portfolio</span>
+                </button>
+                <button onclick="showPage('trading')" class="nav-button w-full" data-page="trading">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Trading</span>
+                </button>
+                <button onclick="showPage('charts')" class="nav-button w-full" data-page="charts">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                    <span>Charts</span>
+                </button>
+                <button onclick="showPage('signals')" class="nav-button w-full" data-page="signals">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    <span>Signals</span>
+                    <span class="ml-auto bg-cyan-500/20 text-cyan-400 text-xs px-2 py-0.5 rounded-full">New</span>
+                </button>
+                <button onclick="showPage('strategies')" class="nav-button w-full" data-page="strategies">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <span>Strategies</span>
+                </button>
+                <button onclick="showPage('settings')" class="nav-button w-full" data-page="settings">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                    <span>Settings</span>
+                </button>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="absolute bottom-4 left-4 right-4">
+                <div class="glass-card p-3 rounded-xl">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        <span class="text-xs text-white/60">WebSocket Connected</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 ml-64 pt-20 relative" style="min-height: calc(100vh - 80px); margin-left: 280px; padding-top: 120px;">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page">
+                <!-- Stats Cards - Liquid Glass -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-card p-6 animate-fade-in" style="animation-delay: 0.1s">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-xs text-white/40 uppercase tracking-wider">Total Value</span>
+                        </div>
+                        <p class="text-3xl font-bold text-white mb-1" id="total-value">$0.00</p>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <span class="text-green-400 text-sm">+0.00%</span>
+                            <span class="text-white/40 text-sm">today</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 animate-fade-in" style="animation-delay: 0.2s">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            </div>
+                            <span class="text-xs text-white/40 uppercase tracking-wider">24H P&L</span>
+                        </div>
+                        <p class="text-3xl font-bold text-white mb-1" id="pnl">$0.00</p>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <span class="text-green-400 text-sm">+0.00%</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 animate-fade-in" style="animation-delay: 0.3s">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400/20 to-pink-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            </div>
+                            <span class="text-xs text-white/40 uppercase tracking-wider">Active Signals</span>
+                        </div>
+                        <p class="text-3xl font-bold text-white mb-1" id="active-signals">0</p>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">BUY: 0</span>
+                            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">SELL: 0</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 animate-fade-in" style="animation-delay: 0.4s">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400/20 to-yellow-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-xs text-white/40 uppercase tracking-wider">Win Rate</span>
+                        </div>
+                        <p class="text-3xl font-bold text-white mb-1">68.5%</p>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <span class="text-green-400 text-sm">+2.3%</span>
+                            <span class="text-white/40 text-sm">vs last week</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <a href="#" onclick="showPage('portfolio'); return false;" class="glass-card p-6 hover:bg-white/5 transition cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">View Portfolio</h3>
+                                <p class="text-sm text-white/40">Check your holdings & P&L</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" onclick="showPage('trading'); return false;" class="glass-card p-6 hover:bg-white/5 transition cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Quick Trade</h3>
+                                <p class="text-sm text-white/40">Buy or sell instantly</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" onclick="showPage('strategies'); return false;" class="glass-card p-6 hover:bg-white/5 transition cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400/20 to-pink-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Run Analysis</h3>
+                                <p class="text-sm text-white/40">AI-powered strategies</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- PnL Summary -->
+                <div class="glass-card p-6 mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-xl">PnL Summary</h3>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full">Live</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">Today's P&L</p>
+                            <p id="pnl-today" class="text-2xl font-bold text-green-400">+$94.46</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">7 Days P&L</p>
+                            <p id="pnl-7day" class="text-2xl font-bold text-green-400">+$40.01</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">30 Days P&L</p>
+                            <p id="pnl-30day" class="text-2xl font-bold text-green-400">+$32.15</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-800/50 rounded-lg">
+                            <p class="text-gray-400 text-sm mb-1">All Time P&L</p>
+                            <p id="pnl-alltime" class="text-2xl font-bold text-green-400">+$32.15</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Prices -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="p-4 border-b border-gray-700">
+                        <h3 class="font-bold">Live Market Prices</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-700">
+                                <tr>
+                                    <th class="p-3 text-left">Coin</th>
+                                    <th class="p-3 text-right">Price</th>
+                                    <th class="p-3 text-right">24h Change</th>
+                                    <th class="p-3 text-right">24h High</th>
+                                    <th class="p-3 text-right">24h Low</th>
+                                    <th class="p-3 text-right">Volume</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prices-table">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Page -->
+            <div id="portfolio" class="page hidden">
+                <h2 class="text-2xl font-bold mb-6">Portfolio</h2>
+
+                <!-- Performance Chart -->
+                <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 mb-6">
+                    <h3 class="font-bold mb-4">Performance History</h3>
+                    <div style="height: 200px;">
+                        <canvas id="portfolio-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Allocation -->
+                <div class="grid grid-cols-2 gap-6 mb-6">
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <h3 class="font-bold mb-4">Portfolio Allocation</h3>
+                        <div style="height: 250px; display: flex; justify-content: center;">
+                            <canvas id="portfolio-pie"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <h3 class="font-bold mb-4">Quick Stats</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Total Coins</span>
+                                <span id="stat-coins" class="text-xl font-bold">--</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Top Holding</span>
+                                <span id="stat-top" class="text-xl font-bold text-cyan-400">--</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Avg Change 24h</span>
+                                <span id="stat-change" class="text-xl font-bold">--</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Risk Level</span>
+                                <span id="stat-risk" class="px-3 py-1 rounded-full text-sm font-bold bg-yellow-500/20 text-yellow-400">MEDIUM</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Portfolio Optimization -->
+                        <div class="mt-4 pt-4 border-t border-gray-700">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-gray-400">🤖 AI Optimization</span>
+                                <button onclick="loadPortfolioOptimization()" class="text-xs bg-purple-600 px-2 py-1 rounded hover:bg-purple-700">Analyze</button>
+                            </div>
+                            <div id="optimization-container" class="text-sm">
+                                <p class="text-gray-400">Click Analyze for recommendations</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <!-- Holdings Table -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="p-4 border-b border-gray-700 flex justify-between">
+                        <h3 class="font-bold">Holdings</h3>
+                        <div class="flex gap-3">
+                            <button onclick="openAddCoinModal()" class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                Add Coin
+                            </button>
+                            <button onclick="editPortfolio()" class="bg-cyan-600 px-4 py-2 rounded hover:bg-cyan-700">Edit Quantities</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-700">
+                                <tr>
+                                    <th class="p-3 text-left cursor-pointer hover:bg-gray-600" onclick="sortPortfolio('coin')">Coin ▼</th>
+                                    <th class="p-3 text-right cursor-pointer hover:bg-gray-600" onclick="sortPortfolio('amount')">Amount</th>
+                                    <th class="p-3 text-right">Price</th>
+                                    <th class="p-3 text-right cursor-pointer hover:bg-gray-600" onclick="sortPortfolio('value')">Value</th>
+                                    <th class="p-3 text-right">24h Change</th>
+                                    <th class="p-3 text-right cursor-pointer hover:bg-gray-600" onclick="sortPortfolio('pnl')">P&L</th>
+                                    <th class="p-3 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="portfolio-table">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Page -->
+            <div id="trading" class="page hidden">
+                <h2 class="text-2xl font-bold mb-6">Trading</h2>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Quick Trade -->
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                        <h3 class="font-bold mb-4 text-xl">Quick Trade</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Coin</label>
+                                <select id="trade-coin" class="w-full bg-gray-700 border border-gray-600 rounded p-2">
+                                    <option value="BTC">BTC</option>
+                                    <option value="ETH">ETH</option>
+                                    <option value="SOL">SOL</option>
+                                    <option value="USDT">USDT</option>
+                                    <option value="TAO">TAO</option>
+                                    <option value="XRP">XRP</option>
+                                    <option value="ADA">ADA</option>
+                                    <option value="NEAR">NEAR</option>
+                                    <option value="FET">FET</option>
+                                    <option value="AVAX">AVAX</option>
+                                    <option value="STX">STX</option>
+                                    <option value="SEI">SEI</option>
+                                    <option value="KAS">KAS</option>
+                                    <option value="ONDO">ONDO</option>
+                                    <option value="SUI">SUI</option>
+                                    <option value="POL">POL</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-400 mb-1">Amount (USDT)</label>
+                                <input type="number" id="trade-amount" class="w-full bg-gray-700 border border-gray-600 rounded p-2" placeholder="1000">
+                            </div>
+
+                            <div class="flex gap-4">
+                                <button onclick="placeOrder('BUY')" class="flex-1 bg-green-600 py-3 rounded font-bold hover:bg-green-700">BUY</button>
+                                <button onclick="placeOrder('SELL')" class="flex-1 bg-red-600 py-3 rounded font-bold hover:bg-red-700">SELL</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paper Trading -->
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-xl">Paper Trading 📊</h3>
+                            <button id="paper-toggle" onclick="togglePaperTrading()" class="px-3 py-1 rounded bg-gray-600 text-sm">
+                                ○ OFF
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <p class="text-gray-400 text-sm">Balance</p>
+                                <p id="paper-balance" class="text-2xl font-bold text-cyan-400">$10,000</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 mb-1 text-sm">Coin</label>
+                                    <select id="paper-coin" class="w-full bg-gray-700 border border-gray-600 rounded p-2">
+                                        <option value="BTC">BTC</option>
+                                        <option value="ETH">ETH</option>
+                                        <option value="SOL">SOL</option>
+                                        <option value="TAO">TAO</option>
+                                        <option value="XRP">XRP</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 mb-1 text-sm">Amount</label>
+                                    <input type="number" id="paper-amount" class="w-full bg-gray-700 border border-gray-600 rounded p-2" value="0.1" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <button onclick="paperTrade(document.getElementById('paper-coin').value, 'BUY', parseFloat(document.getElementById('paper-amount').value))" 
+                                        class="flex-1 bg-green-600 py-2 rounded font-bold hover:bg-green-700">
+                                    BUY
+                                </button>
+                                <button onclick="paperTrade(document.getElementById('paper-coin').value, 'SELL', parseFloat(document.getElementById('paper-amount').value))" 
+                                        class="flex-1 bg-red-600 py-2 rounded font-bold hover:bg-red-700">
+                                    SELL
+                                </button>
+                            </div>
+                            
+                            <h4 class="font-bold mt-4 mb-2">Recent Trades</h4>
+                            <div id="paper-trades" class="max-h-40 overflow-y-auto">
+                                <p class="text-gray-400 text-center py-4">No trades yet</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Calculator -->
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                        <h3 class="font-bold mb-4 text-xl">Risk Calculator</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 mb-1">Account Balance</label>
+                                <input type="number" id="calc-balance" class="w-full bg-gray-700 border border-gray-600 rounded p-2" value="10000">
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-400 mb-1">Risk %</label>
+                                <input type="number" id="calc-risk" class="w-full bg-gray-700 border border-gray-600 rounded p-2" value="2">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Entry Price</label>
+                                    <input type="number" id="calc-entry" class="w-full bg-gray-700 border border-gray-600 rounded p-2" placeholder="0">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Stop Loss</label>
+                                    <input type="number" id="calc-stop" class="w-full bg-gray-700 border border-gray-600 rounded p-2" placeholder="0">
+                                </div>
+                            </div>
+
+                            <button onclick="calculateRisk()" class="w-full bg-cyan-600 py-2 rounded font-bold hover:bg-cyan-700">CALCULATE</button>
+
+                            <div id="calc-results" class="bg-gray-700 p-3 rounded hidden">
+                                <!-- Results -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Backtesting -->
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                        <h3 class="font-bold mb-4 text-xl">Backtesting 🧪</h3>
+
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Coin</label>
+                                    <select id="backtest-coin" class="w-full bg-gray-700 border border-gray-600 rounded p-2">
+                                        <option value="BTC">BTC</option>
+                                        <option value="ETH">ETH</option>
+                                        <option value="SOL">SOL</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Strategy</label>
+                                    <select id="backtest-strategy" class="w-full bg-gray-700 border border-gray-600 rounded p-2">
+                                        <option value="rsi">RSI (Overbought/Oversold)</option>
+                                        <option value="sma_cross">SMA Crossover</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Days (History)</label>
+                                    <input type="number" id="backtest-days" class="w-full bg-gray-700 border border-gray-600 rounded p-2" value="30" min="7" max="365">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 mb-1">Initial Balance</label>
+                                    <input type="number" id="backtest-balance" class="w-full bg-gray-700 border border-gray-600 rounded p-2" value="10000">
+                                </div>
+                            </div>
+
+                            <button onclick="runBacktest()" class="w-full bg-purple-600 py-2 rounded font-bold hover:bg-purple-700">
+                                RUN BACKTEST
+                            </button>
+
+                            <div id="backtest-results" class="mt-4">
+                                <p class="text-gray-400 text-center py-4">Click RUN BACKTEST to see results</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Page -->
+            <div id="charts" class="page hidden">
+                <h2 class="text-2xl font-bold mb-6">Candlestick Charts</h2>
+
+                <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 mb-4">
+                    <div class="flex gap-4 items-center flex-wrap">
+                        <select id="chart-coin" class="bg-gray-700 border border-gray-600 rounded p-2">
+                            <option value="BTC">BTC</option>
+                            <option value="ETH">ETH</option>
+                            <option value="SOL">SOL</option>
+                            <option value="USDT">USDT</option>
+                            <option value="TAO">TAO</option>
+                            <option value="XRP">XRP</option>
+                            <option value="ADA">ADA</option>
+                            <option value="ATH">ATH</option>
+                            <option value="NEAR">NEAR</option>
+                            <option value="FET">FET</option>
+                            <option value="ZBT">ZBT</option>
+                            <option value="VIRTUAL">VIRTUAL</option>
+                            <option value="AVAX">AVAX</option>
+                            <option value="STX">STX</option>
+                            <option value="SEI">SEI</option>
+                            <option value="KAS">KAS</option>
+                            <option value="SYRUP">SYRUP</option>
+                            <option value="ZETA">ZETA</option>
+                            <option value="W">W</option>
+                            <option value="TRAC">TRAC</option>
+                            <option value="KTA">KTA</option>
+                            <option value="ONDO">ONDO</option>
+                            <option value="SUI">SUI</option>
+                            <option value="BIO">BIO</option>
+                            <option value="KO">KO</option>
+                            <option value="POL">POL</option>
+                            <option value="BNB">BNB</option>
+                            <option value="DOGE">DOGE</option>
+                            <option value="DOT">DOT</option>
+                            <option value="LINK">LINK</option>
+                            <option value="UNI">UNI</option>
+                            <option value="LTC">LTC</option>
+                        </select>
+
+                        <select id="chart-tf" class="bg-gray-700 border border-gray-600 rounded p-2">
+                            <option value="1h" selected>1 Hour</option>
+                            <option value="4h">4 Hours</option>
+                            <option value="1d">1 Day</option>
+                        </select>
+
+                        <button onclick="loadCandlestickChart()" class="bg-cyan-600 px-6 py-2 rounded hover:bg-cyan-700">
+                            Load Chart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Candlestick Container -->
+                <div id="candlestick-chart" class="bg-gray-800 rounded-lg border border-gray-700" style="height: 500px;"></div>
+            </div>
+
+            <!-- Signals Page -->
+            <div id="signals" class="page hidden">
+                <h2 class="text-2xl font-bold mb-6">Trading Signals</h2>
+
+                <div class="mb-4">
+                    <button onclick="refreshSignals()" class="bg-cyan-600 px-6 py-2 rounded hover:bg-cyan-700">🔄 Refresh Signals</button>
+                </div>
+
+                <div id="signals-container" class="space-y-3">
+                    <!-- Signals loaded via JS -->
+                </div>
+            </div>
+
+            <!-- Strategies Page -->
+            <div id="strategies" class="page hidden">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-2">Trading Strategies</h2>
+                        <p class="text-white/40">Advanced analysis powered by SMC, ICT, Wyckoff & more</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        <span class="text-sm text-white/60">Analysis Engine Ready</span>
+                    </div>
+                </div>
+
+                <!-- Control Panel - Glass -->
+                <div class="glass-card p-6 mb-8">
+                    <div class="flex flex-wrap gap-6 items-center">
+                        <div class="flex items-center gap-4">
+                            <div>
+                                <label class="block text-xs text-white/40 uppercase tracking-wider mb-2">Coin</label>
+                                <select id="strategy-coin" class="select-glass bg-transparent">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="BNB">BNB (BNB)</option>
+                                    <option value="SOL">Solana (SOL)</option>
+                                    <option value="XRP">XRP (XRP)</option>
+                                    <option value="ADA">Cardano (ADA)</option>
+                                    <option value="DOGE">Dogecoin (DOGE)</option>
+                                    <option value="DOT">Polkadot (DOT)</option>
+                                    <option value="LINK">Chainlink (LINK)</option>
+                                    <option value="AVAX">Avalanche (AVAX)</option>
+                                    <option value="NEAR">NEAR Protocol (NEAR)</option>
+                                    <option value="UNI">Uniswap (UNI)</option>
+                                    <option value="LTC">Litecoin (LTC)</option>
+                                    <option value="ATOM">Cosmos (ATOM)</option>
+                                    <option value="VET">VeChain (VET)</option>
+                                    <option value="TRX">TRON (TRX)</option>
+                                    <option value="SHIB">Shiba Inu (SHIB)</option>
+                                    <option value="AAVE">Aave (AAVE)</option>
+                                    <option value="GRT">The Graph (GRT)</option>
+                                    <option value="SUSHI">SushiSwap (SUSHI)</option>
+                                    <option value="MKR">Maker (MKR)>/option>
+                                    <option value="YFI">Yearn.Finance (YFI)</option>
+                                    <option value="1INCH">1inch (1INCH)</option>
+                                    <option value="ENS">Ethereum Name Service (ENS)</option>
+                                    <option value="LDO">Lido DAO (LDO)</option>
+                                    <option value="OP">Optimism (OP)</option>
+                                    <option value="ARB">Arbitrum (ARB)</option>
+                                    <option value="PEPE">Pepe (PEPE)</option>
+                                    <option value="FLOKI">Floki (FLOKI)</option>
+                                    <option value="COMP">Compound (COMP)</option>
+                                    <option value="CRV">Curve DAO (CRV)</option>
+                                    <option value="USDT">Tether (USDT)</option>
+                                    <option value="TAO">Bittensor (TAO)</option>
+                                    <option value="ZBT">ZBT (ZBT)</option>
+                                    <option value="VIRTUAL">Virtual Protocol (VIRTUAL)</option>
+                                    <option value="STX">Stacks (STX)</option>
+                                    <option value="SEI">Sei (SEI)</option>
+                                    <option value="KAS">Kaspa (KAS)</option>
+                                    <option value="SYRUP">Syrup (SYRUP)</option>
+                                    <option value="ZETA">ZetaChain (ZETA)</option>
+                                    <option value="W">W (W)</option>
+                                    <option value="TRAC">OriginTrail (TRAC)</option>
+                                    <option value="KTA">KTA (KTA)</option>
+                                    <option value="ONDO">Ondo (ONDO)</option>
+                                    <option value="SUI">Sui (SUI)</option>
+                                    <option value="BIO">Bio Protocol (BIO)</option>
+                                    <option value="KO">KO (KO)</option>
+                                    <option value="POL">Polygon (POL)</option>
+                                    <option value="ATH">Aethir (ATH)</option>
+                                    <option value="FET">Fetch.ai (FET)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-white/40 uppercase tracking-wider mb-2">Timeframe</label>
+                                <select id="strategy-tf" class="select-glass bg-transparent">
+                                    <option value="15m">15 Minutes</option>
+                                    <option value="1h" selected>1 Hour</option>
+                                    <option value="4h">4 Hours</option>
+                                    <option value="1d">1 Day</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button onclick="runStrategies()" class="btn-primary flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            Analyze Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="strategies-loading" class="hidden">
+                    <div class="flex flex-col items-center justify-center py-12">
+                        <div class="spinner-glass mb-4"></div>
+                        <p class="text-white/60">Running advanced analysis...</p>
+                    </div>
+                </div>
+
+                <!-- AI Prediction Card -->
+                <div class="glass-card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                            AI Prediction
+                        </h3>
+                        <button onclick="loadAIPrediction()" class="text-sm text-cyan-400 hover:text-cyan-300">Refresh</button>
+                    </div>
+                    <div id="ai-prediction-container" class="min-h-[100px] flex items-center justify-center text-white/40">
+                        Click Refresh to get AI prediction
+                    </div>
+                </div>
+                
+                <!-- Sentiment Analysis Card -->
+                <div class="glass-card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                            </svg>
+                            Social Sentiment
+                        </h3>
+                        <button onclick="loadSentiment()" class="text-sm text-cyan-400 hover:text-cyan-300">Refresh</button>
+                    </div>
+                    <div id="sentiment-container" class="min-h-[100px] flex items-center justify-center text-white/40">
+                        Click Refresh to analyze sentiment
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div id="strategies-results" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Empty State -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <p class="text-white/40">Select a coin and timeframe to start analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="page hidden">
+                <h2 class="text-2xl font-bold mb-6">Settings</h2>
+
+                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 max-w-2xl">
+                    <div class="space-y-6">
+                        <!-- Currency -->
+                        <div>
+                            <label class="block text-gray-400 mb-2">Display Currency</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="currency" value="USD" checked> USD ($)
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="currency" value="SAR"> SAR (ریال)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Theme Toggle -->
+                        <div>
+                            <label class="block text-gray-400 mb-2">Theme</label>
+                            <div class="flex items-center gap-4">
+                                <button onclick="setTheme('dark')" id="theme-dark" class="flex items-center gap-2 px-4 py-2 rounded bg-cyan-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                                    </svg>
+                                    Dark
+                                </button>
+                                <button onclick="setTheme('light')" id="theme-light" class="flex items-center gap-2 px-4 py-2 rounded bg-gray-700 hover:bg-gray-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                    Light
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Strategy Toggles -->
+                        <div>
+                            <label class="block text-gray-400 mb-2">Strategy Modules</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="toggle-smc" checked> Smart Money Concepts
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="toggle-ict" checked> ICT Strategy
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="toggle-patterns" checked> Pattern Recognition
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="toggle-whale"> Whale Tracker
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 pt-4">
+                            <button onclick="saveSettings()" class="bg-cyan-600 px-6 py-2 rounded hover:bg-cyan-700">Save Settings</button>
+                            <button onclick="resetSettings()" class="bg-gray-600 px-6 py-2 rounded hover:bg-gray-700">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Coin Modal -->
+    <div id="add-coin-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Add New Coin</h3>
+                <button onclick="closeAddCoinModal()" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Search Box -->
+            <div class="mb-4">
+                <label class="block text-gray-400 mb-2">Search Coin</label>
+                <div class="relative">
+                    <input type="text" id="coin-search" placeholder="Type coin name or symbol..." 
+                           class="w-full bg-gray-700 border border-gray-600 rounded p-3 pl-10 focus:border-cyan-500 focus:outline-none"
+                           onkeyup="searchCoins(this.value)">
+                    <svg class="w-5 h-5 absolute left-3 top-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="search-results" class="max-h-60 overflow-y-auto space-y-2 mb-4">
+                <!-- Results loaded here -->
+            </div>
+            
+            <!-- Selected Coin -->
+            <div id="selected-coin-section" class="hidden border-t border-gray-700 pt-4">
+                <div class="flex items-center gap-3 mb-4 p-3 bg-gray-700 rounded">
+                    <div id="selected-coin-icon" class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center font-bold text-cyan-400">--</div>
+                    <div>
+                        <div id="selected-coin-name" class="font-bold">--</div>
+                        <div id="selected-coin-price" class="text-sm text-gray-400">--</div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-400 mb-2">Amount</label>
+                    <input type="number" id="new-coin-amount" step="any" placeholder="0.00"
+                           class="w-full bg-gray-700 border border-gray-600 rounded p-3 focus:border-cyan-500 focus:outline-none">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="addCoinToPortfolio()" class="flex-1 bg-green-600 py-3 rounded font-bold hover:bg-green-700">
+                        Add to Portfolio
+                    </button>
+                    <button onclick="closeAddCoinModal()" class="flex-1 bg-gray-600 py-3 rounded font-bold hover:bg-gray-700">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Profile Settings 👤</h3>
+                <button onclick="closeProfileModal()" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-2xl font-bold">
+                    F
+                </div>
+                <div>
+                    <p class="font-bold text-lg">Faisal Al Farhan</p>
+                    <p class="text-gray-400">FAL Army Commander 🦅</p>
+                </div>
+            </div>
+            
+            <!-- Settings Form -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-400 mb-2">Display Name</label>
+                    <input type="text" id="profile-name" value="Faisal Al Farhan"
+                           class="w-full bg-gray-700 border border-gray-600 rounded p-3 focus:border-cyan-500 focus:outline-none">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 mb-2">Default Currency</label>
+                    <select id="profile-currency" onchange="changeCurrency()"
+                            class="w-full bg-gray-700 border border-gray-600 rounded p-3 focus:border-cyan-500 focus:outline-none">
+                        <option value="USD">USD ($)</option>
+                        <option value="SAR">SAR (ريال)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 mb-2">Portfolio Value</label>
+                    <div class="p-3 bg-gray-700 rounded font-mono text-cyan-400" id="profile-portfolio-value">
+                        Loading...
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button onclick="saveProfile()" class="flex-1 bg-cyan-600 py-3 rounded font-bold hover:bg-cyan-700">
+                        Save Changes
+                    </button>
+                    <button onclick="closeProfileModal()" class="flex-1 bg-gray-600 py-3 rounded font-bold hover:bg-gray-700">
+                        Cancel
+                    </button>
+                </div>
+                
+                <!-- Export Section -->
+                <div class="border-t border-gray-700 pt-6 mt-6">
+                    <h4 class="font-bold mb-4 text-lg">📊 Export Reports</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="exportReport('json')" class="bg-purple-600 py-2 rounded hover:bg-purple-700 flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            JSON
+                        </button>
+                        <button onclick="exportReport('csv')" class="bg-green-600 py-2 rounded hover:bg-green-700 flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            CSV
+                        </button>
+                    </div>
+                    <!-- Language Switcher -->
+                    <div class="mt-6 pt-6 border-t border-gray-700">
+                        <h4 class="font-bold mb-4 text-lg">🌐 Language / اللغة</h4>
+                        <div class="flex gap-3">
+                            <button onclick="setLanguage('en')" class="flex-1 py-2 rounded border border-cyan-600 hover:bg-cyan-600/20" id="lang-en">
+                                🇺🇸 English
+                            </button>
+                            <button onclick="setLanguage('ar')" class="flex-1 py-2 rounded border border-gray-600 hover:bg-gray-600/20" id="lang-ar">
+                                🇸🇦 العربية
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Price Alerts Modal -->
+    <div id="alerts-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 p-6 w-full max-w-lg mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Price Alerts 🔔</h3>
+                <button onclick="closeAlertsModal()" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Active Alerts -->
+            <div class="mb-6">
+                <h4 class="text-sm text-gray-400 mb-3">Active Alerts</h4>
+                <div id="active-alerts-list" class="space-y-2 max-h-40 overflow-y-auto">
+                    <div class="text-center text-gray-500 py-4">No active alerts</div>
+                </div>
+            </div>
+            
+            <!-- Add New Alert -->
+            <div class="border-t border-gray-700 pt-4">
+                <h4 class="text-sm text-gray-400 mb-3">Create New Alert</h4>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-400 mb-2">Coin</label>
+                        <select id="alert-coin" class="w-full bg-gray-700 border border-gray-600 rounded p-2">
+                            <option value="BTC">BTC</option>
+                            <option value="ETH">ETH</option>
+                            <option value="SOL">SOL</option>
+                            <option value="TAO">TAO</option>
+                            <option value="XRP">XRP</option>
+                            <option value="ADA">ADA</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Condition</label>
+                        <select id="alert-condition" class="w-full bg-gray-700 border border-gray-600 rounded p-2">
+                            <option value="above">Price goes above</option>
+                            <option value="below">Price goes below</option>
+                            <option value="up">Goes up by %</option>
+                            <option value="down">Goes down by %</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-400 mb-2">Target Value</label>
+                    <input type="number" id="alert-target" step="any" placeholder="Enter price or percentage"
+                           class="w-full bg-gray-700 border border-gray-600 rounded p-3 focus:border-cyan-500 focus:outline-none">
+                </div>
+                
+                <button onclick="createAlert()" class="w-full bg-cyan-600 py-3 rounded font-bold hover:bg-cyan-700">
+                    Create Alert
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</body>
+</html>

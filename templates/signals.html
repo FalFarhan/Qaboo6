@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QABOOT V4 PRO - Advanced Signals Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#0c0e17',
+                        surface: '#11131d',
+                        'surface-container': '#1a1d29',
+                        'surface-container-high': '#222635',
+                        'surface-container-low': '#151924',
+                        'on-surface': '#f0f0fd',
+                        'on-surface-variant': '#bacbb9',
+                        outline: '#4b4e5c',
+                        'outline-variant': '#2c2f3a',
+                        primary: '#3fff8b',
+                        secondary: '#50e1f9',
+                        tertiary: '#f2ca50',
+                        error: '#ff716c',
+                        success: '#00e676',
+                        warning: '#ffa726'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0c0e17; }
+        .glass-edge { border: 1px solid rgba(255, 255, 255, 0.08); }
+        .pulse-live { animation: pulse-live 2s infinite; }
+        @keyframes pulse-live {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .strategy-card { transition: all 0.3s ease; }
+        .strategy-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(63, 255, 139, 0.1); }
+        .signal-row { transition: all 0.2s ease; }
+        .signal-row:hover { background: rgba(255, 255, 255, 0.03); }
+        .metric-bar { background: linear-gradient(90deg, rgba(63, 255, 139, 0.3) 0%, rgba(63, 255, 139, 0.1) 100%); }
+        .scrolling-ticker { animation: scroll 30s linear infinite; }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface overflow-x-hidden">
+<!-- Side Navigation -->
+<aside class="bg-surface border-r border-outline-variant/20 w-[280px] h-screen fixed left-0 top-0 flex flex-col py-8 px-4 z-50">
+<div class="mb-12 px-4">
+<h1 class="text-xl font-black tracking-tighter text-on-surface">QABOOT <span class="text-xs font-normal opacity-50 tracking-widest block">V4 PRO</span></h1>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-medium text-sm tracking-tight" href="/">
+<span class="material-symbols-outlined">grid_view</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-medium text-sm tracking-tight" href="/portfolio">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                Portfolio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-medium text-sm tracking-tight" href="/trading">
+<span class="material-symbols-outlined">swap_horiz</span>
+                Trading
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-medium text-sm tracking-tight" href="/charts">
+<span class="material-symbols-outlined">monitoring</span>
+                Charts
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-medium text-sm tracking-tight" href="/strategies">
+<span class="material-symbols-outlined">psychology</span>
+                Strategies
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary border-l-4 border-primary bg-gradient-to-r from-primary/10 to-transparent font-medium text-sm tracking-tight" href="/signals">
+<span class="material-symbols-outlined">sensors</span>
+                Signals
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors font-medium text-sm tracking-tight" href="/settings">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto px-4 pt-8">
+<div class="bg-gradient-to-br from-primary/20 to-secondary/10 p-4 rounded-xl border border-primary/20">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">rocket_launch</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface">AI Bot Ready</p>
+<p class="text-[10px] text-on-surface-variant">26 Strategies Active</p>
+</div>
+</div>
+<button class="w-full py-2 bg-primary text-background font-bold text-xs uppercase tracking-widest rounded-lg hover:brightness-110 transition-all">
+                    Deploy Now
+                </button>
+</div>
+</div>
+</aside>
+<!-- Top Header -->
+<header class="fixed top-0 right-0 left-[280px] h-16 bg-background/80 backdrop-blur-xl border-b border-outline-variant/20 flex items-center justify-between px-8 z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="w-full bg-surface-container border border-outline-variant/30 text-sm py-2 pl-10 pr-4 focus:ring-1 focus:ring-primary/50 transition-all rounded-lg" id="signal-search" placeholder="Search coins, strategies, or signals..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-success/10 border border-success/20 rounded-full">
+<span class="w-2 h-2 rounded-full bg-success pulse-live"></span>
+<span class="text-[10px] font-bold text-success tracking-wider">LIVE FEED</span>
+</div>
+<!-- Theme Toggle -->
+<button onclick="toggleTheme()" id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+</button>
+<div class="flex items-center gap-3 border-l border-outline-variant/20 pl-6">
+<div class="text-right">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant">Portfolio Value</p>
+<p class="text-sm font-bold text-on-surface" id="header-portfolio-value">$737.16</p>
+</div>
+<img class="w-9 h-9 rounded-full border border-primary/30 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTCet3lowFdt_UyKJ6_Ztj565VoD4vi6QnPfand8vRPNB_QiNOt1u7lDvLRiPQifsJOMCVDo9tUZR5hUdB2PGzs7Bt69DHaQMzv03t8voIsGk5YL8O7lP2Ge0ZQEk7KyODmLXHGZPKhhHyJ_JaGhZTg2X9NerhlIKaqjS211eHhp4c76ZIIcgydieIrX4nsPeI2JCLQx72ml5550mhBpTaRggOXl3Whd409raeLfudEV8HuocECZ7j9pNOy722ACHOUW6rWulKCEY"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<div class="pt-20 px-8 pb-12 ml-[280px]">
+<!-- Live Ticker -->
+<div class="mb-6 bg-surface-container border border-outline-variant/20 rounded-lg overflow-hidden">
+<div class="flex items-center px-4 py-2 border-b border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-sm mr-2">update</span>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Live Market Pulse</span>
+</div>
+<div class="overflow-hidden py-2">
+<div class="flex gap-8 scrolling-ticker whitespace-nowrap" id="live-ticker">
+<!-- Populated by JS -->
+</div>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<div class="bg-surface-container glass-edge p-4 rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Active Signals</span>
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+</div>
+<p class="text-2xl font-black text-on-surface" id="active-signals-count">8</p>
+<p class="text-[10px] text-success mt-1">+3 in last hour</p>
+</div>
+<div class="bg-surface-container glass-edge p-4 rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">AI Win Rate</span>
+<span class="material-symbols-outlined text-secondary">psychology</span>
+</div>
+<p class="text-2xl font-black text-on-surface">82.4%</p>
+<p class="text-[10px] text-success mt-1">+2.1% this week</p>
+</div>
+<div class="bg-surface-container glass-edge p-4 rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Market Sentiment</span>
+<span class="material-symbols-outlined text-tertiary">trending_up</span>
+</div>
+<p class="text-2xl font-black text-success">BULLISH</p>
+<p class="text-[10px] text-on-surface-variant mt-1">Fear &amp; Greed: 78</p>
+</div>
+<div class="bg-surface-container glass-edge p-4 rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">24h Volume</span>
+<span class="material-symbols-outlined text-primary">bar_chart</span>
+</div>
+<p class="text-2xl font-black text-on-surface">$2.4B</p>
+<p class="text-[10px] text-success mt-1">+15.3% vs yesterday</p>
+</div>
+</div>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Left Column: Signal Cards -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- Strategy Filter Tabs -->
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-2xl font-black tracking-tight text-on-surface">Active Opportunities</h2>
+<div class="flex gap-2 p-1 bg-surface-container rounded-lg border border-outline-variant/30">
+<button class="strategy-tab px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest bg-primary text-background rounded" data-strategy="all">All</button>
+<button class="strategy-tab px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" data-strategy="ai">AI Models</button>
+<button class="strategy-tab px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" data-strategy="technical">Technical</button>
+<button class="strategy-tab px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" data-strategy="whale">Whale</button>
+<button class="strategy-tab px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" data-strategy="arbitrage">Arbitrage</button>
+</div>
+</div>
+<!-- Signal Type Filter -->
+<div class="flex gap-2 mb-4 items-center flex-wrap">
+<div class="relative flex-grow max-w-xs">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-xs text-on-surface-variant">search</span>
+<input type="text" id="signals-search" placeholder="Search signals..." 
+       class="w-full bg-surface-container border border-outline-variant/30 rounded-lg py-2 pl-9 pr-4 text-[11px] font-medium text-on-surface focus:ring-1 focus:ring-primary focus:border-primary"
+       oninput="filterSignals()">
+</div>
+<button class="signal-filter-btn px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider bg-success/20 text-success border border-success/30" data-type="all">All Signals</button>
+<button class="signal-filter-btn px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant border border-outline-variant/30 hover:bg-success/10 hover:text-success transition-all" data-type="buy">Buy Only</button>
+<button class="signal-filter-btn px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant border border-outline-variant/30 hover:bg-error/10 hover:text-error transition-all" data-type="sell">Sell Only</button>
+<button class="signal-filter-btn px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant border border-outline-variant/30 hover:bg-tertiary/10 hover:text-tertiary transition-all" data-type="portfolio">Portfolio Coins</button>
+</div>
+<!-- Dynamic Signal Cards Container -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="signal-cards-container">
+<!-- Signal cards populated by JavaScript -->
+</div>
+<!-- Portfolio Holdings Signals -->
+<div class="mt-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-black tracking-tight text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+                            Your Portfolio Signals
+                        </h3>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">26 Assets Monitored</span>
+</div>
+<div class="bg-surface-container glass-edge rounded-lg overflow-hidden">
+<div class="grid grid-cols-12 gap-4 p-4 border-b border-outline-variant/20 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+<div class="col-span-2">Asset</div>
+<div class="col-span-1">Signal</div>
+<div class="col-span-2">Strategy</div>
+<div class="col-span-2">Entry/Target</div>
+<div class="col-span-1">Confidence</div>
+<div class="col-span-2">Risk/Reward</div>
+<div class="col-span-2 text-right">Action</div>
+</div>
+<div id="portfolio-signals-list">
+<!-- Populated by JS -->
+</div>
+</div>
+</div>
+<!-- Recent Executions -->
+<div class="mt-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-black tracking-tight text-on-surface">Recent Signal Executions</h3>
+<button class="text-[10px] font-bold text-primary hover:text-primary/80 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">download</span>
+                            Export CSV
+                        </button>
+</div>
+<div class="bg-surface-container glass-edge rounded-lg overflow-hidden">
+<table class="w-full">
+<thead>
+<tr class="border-b border-outline-variant/20">
+<th class="text-left p-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Time</th>
+<th class="text-left p-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Asset</th>
+<th class="text-left p-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Type</th>
+<th class="text-left p-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Strategy</th>
+<th class="text-left p-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Result</th>
+<th class="text-right p-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">P/L</th>
+</tr>
+</thead>
+<tbody id="executions-table-body">
+<!-- Populated by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column: AI Insights & Strategies -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- AI Market Sentiment -->
+<div class="bg-surface-container glass-edge p-6 rounded-lg">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-black text-on-surface uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">neurology</span>
+                            AI Market Sentiment
+                        </h3>
+<span class="text-[9px] text-success bg-success/10 px-2 py-0.5 rounded">LIVE</span>
+</div>
+<div class="relative h-40 mb-4">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="text-center">
+<p class="text-4xl font-black text-success" id="sentiment-score">78</p>
+<p class="text-xs font-bold text-success uppercase tracking-widest">BULLISH</p>
+</div>
+</div>
+<svg class="w-full h-full transform -rotate-90">
+<circle cx="50%" cy="50%" fill="none" r="60" stroke="rgba(255,255,255,0.1)" stroke-width="8"></circle>
+<circle cx="50%" cy="50%" fill="none" r="60" stroke="#3fff8b" stroke-dasharray="377" stroke-dashoffset="83" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-on-surface-variant">Fear</span>
+<div class="w-32 h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full w-[22%] bg-error"></div>
+</div>
+<span class="text-[10px] text-error font-bold">22%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-on-surface-variant">Neutral</span>
+<div class="w-32 h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full w-[15%] bg-tertiary"></div>
+</div>
+<span class="text-[10px] text-tertiary font-bold">15%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-on-surface-variant">Greed</span>
+<div class="w-32 h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full w-[63%] bg-success"></div>
+</div>
+<span class="text-[10px] text-success font-bold">63%</span>
+</div>
+</div>
+</div>
+<!-- Active Strategies Panel -->
+<div class="bg-surface-container glass-edge p-6 rounded-lg">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-black text-on-surface uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">strategy</span>
+                            Active Strategies
+                        </h3>
+<span class="text-[9px] text-on-surface-variant">26 Running</span>
+</div>
+<div class="space-y-3" id="strategies-list">
+<!-- Strategy Cards populated by JS -->
+</div>
+<button class="w-full mt-4 py-2 border border-outline-variant/30 rounded-lg text-[10px] font-bold text-on-surface-variant uppercase tracking-widest hover:bg-surface-container-high transition-all">
+                        View All Strategies
+                    </button>
+</div>
+<!-- Top Performing Coins -->
+<div class="bg-surface-container glass-edge p-6 rounded-lg">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-black text-on-surface uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">emoji_events</span>
+                            Top Opportunities
+                        </h3>
+<span class="text-[9px] text-success">+24h</span>
+</div>
+<div class="space-y-3" id="top-opportunities">
+<!-- Populated by JS -->
+</div>
+</div>
+<!-- Market Indicators -->
+<div class="bg-surface-container glass-edge p-6 rounded-lg">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-black text-on-surface uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">insights</span>
+                            Multi-Timeframe
+                        </h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">15m Trend</p>
+<p class="text-sm font-bold text-success">BULLISH</p>
+</div>
+<span class="material-symbols-outlined text-success">trending_up</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">1h Trend</p>
+<p class="text-sm font-bold text-success">BULLISH</p>
+</div>
+<span class="material-symbols-outlined text-success">trending_up</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">4h Trend</p>
+<p class="text-sm font-bold text-tertiary">NEUTRAL</p>
+</div>
+<span class="material-symbols-outlined text-tertiary">trending_flat</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">1D Trend</p>
+<p class="text-sm font-bold text-success">BULLISH</p>
+</div>
+<span class="material-symbols-outlined text-success">trending_up</span>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="bg-gradient-to-br from-primary/10 to-secondary/5 border border-primary/20 p-6 rounded-lg">
+<h3 class="text-sm font-black text-on-surface uppercase tracking-wider mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bolt</span>
+                        Quick Actions
+                    </h3>
+<div class="space-y-2">
+<button class="w-full py-2.5 bg-primary text-background font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+                            Execute Top Signal
+                        </button>
+<button class="w-full py-2.5 bg-surface-container border border-outline-variant/30 text-on-surface font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                            Schedule Alert
+                        </button>
+<button class="w-full py-2.5 bg-surface-container border border-outline-variant/30 text-on-surface font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">share</span>
+                            Share Signal
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Signal Detail Modal -->
+<div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center" id="signal-modal">
+<div class="bg-surface-container border border-outline-variant/30 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4">
+<div class="p-6 border-b border-outline-variant/20 flex items-center justify-between">
+<h3 class="text-lg font-black text-on-surface">Signal Details</h3>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="closeSignalModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-6" id="signal-modal-content">
+<!-- Populated by JS -->
+</div>
+</div>
+</div>
+<!-- Scripts -->
+<script src="{{ url_for('static', filename='js/signals_advanced.js') }}?v=1"></script>
+<script>
+        // Theme initialization
+        const savedTheme = localStorage.getItem('qaboot-theme') || 'dark';
+        const htmlElement = document.documentElement;
+        const themeIcon = document.getElementById('theme-icon');
+        
+        if (savedTheme === 'light') {
+            htmlElement.classList.remove('dark');
+            if (themeIcon) themeIcon.textContent = 'dark_mode';
+        } else {
+            htmlElement.classList.add('dark');
+            if (themeIcon) themeIcon.textContent = 'light_mode';
+        }
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const isDark = htmlElement.classList.contains('dark');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('qaboot-theme', 'light');
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('qaboot-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+        
+        // ===== SIGNALS FILTERING =====
+        function filterSignals() {
+            const searchTerm = document.getElementById('signals-search')?.value.toLowerCase() || '';
+            const signalCards = document.querySelectorAll('#signal-cards-container > div');
+            let visibleCount = 0;
+            
+            signalCards.forEach(card => {
+                const assetName = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+                const assetSymbol = card.querySelector('p')?.textContent?.toLowerCase() || '';
+                const signalType = card.querySelector('.badge-signal')?.textContent?.toLowerCase() || '';
+                
+                const matchesSearch = assetName.includes(searchTerm) || 
+                                     assetSymbol.includes(searchTerm) ||
+                                     signalType.includes(searchTerm);
+                
+                if (matchesSearch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update counter
+            const title = document.querySelector('h2');
+            if (title) {
+                title.textContent = `Active Opportunities (${visibleCount})`;
+            }
+        }
+        
+        // Add event listener to search input
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('signals-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterSignals);
+            }
+        });
+    </script>
+</body>
+</html>
