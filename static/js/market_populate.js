@@ -104,7 +104,7 @@ async function populateMarketTable() {
                     change: data.change,
                     high: data.high,
                     low: data.low,
-                    volume: data.quoteVolume
+                    volume: data.volume  // Fixed: was quoteVolume
                 });
                 tbody.insertAdjacentHTML('beforeend', rowHTML);
             }
