@@ -1,9 +1,10 @@
 {
+  "$schema": "https://railway.com/railway.schema.json",
   "build": {
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "gunicorn --worker-class eventlet -w 1 app:app --bind 0.0.0.0:$PORT",
+    "startCommand": "gunicorn --bind 0.0.0.0:$PORT --workers 4 --threads 2 app:app",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
